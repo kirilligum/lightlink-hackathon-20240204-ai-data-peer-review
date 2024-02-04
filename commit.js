@@ -1,27 +1,32 @@
 const crypto = require('crypto');
 
-function generateCommitHash(vote, salt) {
- if (!salt) {
-   salt = crypto.randomBytes(16); // Generates a random salt
- }
-
- // Combine the vote and salt
- const combined = vote.toString() + salt.toString('hex');
-
- // Create a SHA-256 hash
- const commitHash = crypto.createHash('sha256').update(combined).digest('hex');
-
- return { commitHash, salt: salt.toString('hex') };
+// Function to generate a commit hash
+function generateCommitHash(vote, secret) {
+    const voteByte = vote ? '01' : '00'; // Representing boolean as byte
+    const data = voteByte + secret.substring(2); // Remove '0x' from the secret before hashing
+    const hash = crypto.createHash('sha256');
+    hash.update(Buffer.from(data, 'hex'));
+    return '0x' + hash.digest('hex');
 }
 
-// Loop for 3 examples
-for (let i = 1; i <= 6; i++) {
- const vote = i % 2 === 0; // Alternate between true and false
- const { commitHash, salt } = generateCommitHash(vote);
- console.log(`Example ${i}:`);
- console.log("Vote:", vote);
- console.log("Commit Hash:", commitHash);
- console.log("Salt:", salt);
- console.log("--------------------");
+// Function to generate examples
+function generateExamples() {
+    const examples = [];
+    for (let i = 0; i < 3; i++) {
+        const secret = '0x' + crypto.randomBytes(32).toString('hex');
+        examples.push({ vote: true, secret, commitHash: generateCommitHash(true, secret) });
+        examples.push({ vote: false, secret, commitHash: generateCommitHash(false, secret) });
+    }
+    return examples;
+}
+
+// Main execution
+if (process.argv.length === 3) {
+    const vote = process.argv[2].toLowerCase() === 'true';
+    const secret = '0x' + crypto.randomBytes(32).toString('hex');
+    console.log(`Vote: ${vote}, Secret: ${secret}, CommitHash: ${generateCommitHash(vote, secret)}`);
+} else {
+    console.log("Generated examples:");
+    console.log(generateExamples());
 }
 
