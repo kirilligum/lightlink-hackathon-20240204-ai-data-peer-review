@@ -14,6 +14,7 @@ contract ReviewProcess {
         mapping(address => bytes32) commits;
         mapping(address => bool) votes;
         address[] selectedReviewers;
+        bool votingEnded;
         bool revealPhase;
         uint revealCount;
     }
@@ -80,14 +81,14 @@ contract ReviewProcess {
 
         // Simple loop to check substring
         for(uint i = 0; i < stringBytes.length - substringBytes.length; i++) {
-            bool matchSubString = true;
+            bool isMatch = true;
             for(uint j = 0; j < substringBytes.length; j++) {
                 if (stringBytes[i + j] != substringBytes[j]) {
-                    matchSubString = false;
+                    isMatch = false;
                     break;
                 }
             }
-            if (matchSubString) return true;
+            if (isMatch) return true;
         }
         return false;
     }
@@ -95,13 +96,17 @@ contract ReviewProcess {
     // Commit a vote as a hash
     function commitVote(uint submissionId, bytes32 commitHash) public {
         require(submissionId < submissions.length, "Invalid submission ID");
-        submissions[submissionId].commits[msg.sender] = commitHash;
+        Submission storage submission = submissions[submissionId];
+        require(!submission.votingEnded, "Voting has ended");
+
+        submission.commits[msg.sender] = commitHash;
     }
 
     // Reveal a vote
     function revealVote(uint submissionId, bool vote, bytes32 secret) public {
         require(submissionId < submissions.length, "Invalid submission ID");
         Submission storage submission = submissions[submissionId];
+        require(submission.votingEnded, "Voting has not ended");
         require(keccak256(abi.encodePacked(vote, secret)) == submission.commits[msg.sender], "Invalid commit");
 
         submission.votes[msg.sender] = vote;
@@ -111,6 +116,38 @@ contract ReviewProcess {
             submission.revealPhase = true;
             // Perform actions after all votes are revealed
         }
+    }
+
+    // End the voting phase
+    function endVoting(uint submissionId) public {
+        require(submissionId < submissions.length, "Invalid submission ID");
+        Submission storage submission = submissions[submissionId];
+        submission.votingEnded = true;
+    }
+
+    // Get all approved reviewers for a submission
+    function getApprovedReviewers(uint submissionId) public view returns (address[] memory) {
+        require(submissionId < submissions.length, "Invalid submission ID");
+        Submission storage submission = submissions[submissionId];
+        require(submission.revealPhase, "Reveal phase not completed");
+
+        address[] memory approvedReviewers = new address[](submission.selectedReviewers.length);
+        uint count = 0;
+
+        for (uint i = 0; i < submission.selectedReviewers.length; i++) {
+            if (submission.votes[submission.selectedReviewers[i]]) {
+                approvedReviewers[count] = submission.selectedReviewers[i];
+                count++;
+            }
+        }
+
+        // Resize the array to fit the actual number of approved reviewers
+        address[] memory resizedApprovedReviewers = new address[](count);
+        for (uint i = 0; i < count; i++) {
+            resizedApprovedReviewers[i] = approvedReviewers[i];
+        }
+
+        return resizedApprovedReviewers;
     }
 }
 
