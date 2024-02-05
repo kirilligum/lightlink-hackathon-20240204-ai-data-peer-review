@@ -8,7 +8,7 @@ describe("PeerReview Contract", function () {
     const peerReview = await PeerReview.deploy([owner.address], []);
 
 
-    const authors = await peerReview.authors();
+    const authors = await peerReview.authors(0);
     expect(authors[0]).to.equal(owner.address);
   });
 });
