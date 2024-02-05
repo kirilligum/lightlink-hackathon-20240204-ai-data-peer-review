@@ -28,19 +28,63 @@ contract PeerReviewTest is PRBTest, StdCheats {
         peerReview = new PeerReview(authors, reviewers);
     }
 
-    function testAddingKeywordsByReviewer() public {
-        // Simulate reviewer adding keywords
-        vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer's address
+    function testAddingKeywordsByReviewer1() public {
+        // Simulate reviewer 1 adding keywords
+        vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer 1's address
         string[] memory keywords = new string[](2);
         keywords[0] = "gasless";
         keywords[1] = "blockchain";
         peerReview.addKeywords(keywords);
         vm.stopPrank();
 
-        // Verify the keywords are correctly added
+        // Verify the keywords are correctly added for reviewer 1
         string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
         assertEq(returnedKeywords.length, 2);
         assertEq(returnedKeywords[0], "gasless");
         assertEq(returnedKeywords[1], "blockchain");
+    }
+
+    function testAddingKeywordsByReviewer2() public {
+        // Simulate reviewer 2 adding keywords
+        vm.startPrank(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65); // Simulate call from reviewer 2's address
+        string[] memory keywords = new string[](2);
+        keywords[0] = "transactions";
+        keywords[1] = "fees";
+        peerReview.addKeywords(keywords);
+        vm.stopPrank();
+
+        // Verify the keywords are correctly added for reviewer 2
+        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
+        assertEq(returnedKeywords.length, 2);
+        assertEq(returnedKeywords[0], "transactions");
+        assertEq(returnedKeywords[1], "fees");
+    }
+
+    function testAddingKeywordsByReviewer3() public {
+        // Simulate reviewer 3 adding keywords
+        vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc); // Simulate call from reviewer 3's address
+        string[] memory keywords = new string[](1);
+        keywords[0] = "scalability";
+        peerReview.addKeywords(keywords);
+        vm.stopPrank();
+
+        // Verify the keywords are correctly added for reviewer 3
+        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+        assertEq(returnedKeywords.length, 1);
+        assertEq(returnedKeywords[0], "scalability");
+    }
+
+    function testAddingKeywordsByReviewer4() public {
+        // Simulate reviewer 4 adding keywords
+        vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 4's address
+        string[] memory keywords = new string[](1);
+        keywords[0] = "security";
+        peerReview.addKeywords(keywords);
+        vm.stopPrank();
+
+        // Verify the keywords are correctly added for reviewer 4
+        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+        assertEq(returnedKeywords.length, 1);
+        assertEq(returnedKeywords[0], "security");
     }
 }
