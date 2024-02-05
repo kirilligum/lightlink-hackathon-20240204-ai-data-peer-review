@@ -131,4 +131,23 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(storedQuestion, question);
     assertEq(storedResponse, response);
   }
+  /// @dev Test that scores are not 0 after running findReviewers
+  function testScoresAreNotZeroAfterFindingReviewers() public {
+    // Simulate an author submitting a data object
+    vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
+    string memory question = "why do we need gasless transactions?";
+    string memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+    uint256 submissionId = peerReview.submitData(question, response);
+    vm.stopPrank();
+
+    // Trigger the function to find suitable reviewers for the submission
+    peerReview.findReviewers(submissionId);
+
+    // Verify the scores of the selected reviewers are not 0
+    address[] memory selectedReviewers = peerReview.getSelectedReviewers(submissionId);
+    for (uint256 i = 0; i < selectedReviewers.length; i++) {
+      uint256 reviewerScore = peerReview.getReviewerScore(selectedReviewers[i]);
+      assertTrue(reviewerScore > 0, "Reviewer score should not be 0");
+    }
+  }
 }
