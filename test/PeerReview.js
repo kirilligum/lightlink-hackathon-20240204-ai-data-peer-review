@@ -3,10 +3,10 @@ const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
 async function deployPeerReviewFixture() {
-  const [deployer, author1, reviewer1, reviewer2, reviewer3] = await ethers.getSigners();
+  const [deployer, author1, reviewer1, reviewer2, reviewer3, reviewer4] = await ethers.getSigners();
   const PeerReview = await ethers.getContractFactory("PeerReview");
-  const peerReview = await PeerReview.deploy([author1.address], [reviewer1.address, reviewer2.address, reviewer3.address]);
-  return { peerReview, author1, reviewer1, reviewer2, reviewer3 };
+  const peerReview = await PeerReview.deploy([author1.address], [reviewer1.address, reviewer2.address, reviewer3.address, reviewer4.address]);
+  return { peerReview, author1, reviewer1, reviewer2, reviewer3, reviewer4 };
 }
 
 describe("PeerReview Contract Deployment and Initialization Test", function () {
@@ -31,7 +31,7 @@ describe("PeerReview Contract Deployment and Initialization Test", function () {
       { reviewer: reviewer1, keywords: ["gassless", "blockchain"] },
       { reviewer: reviewer2, keywords: [] },
       { reviewer: reviewer3, keywords: ["transactions"] },
-      { reviewer: reviewer4, keywords: ["fees"] },
+      { reviewer: reviewer4, keywords: ["fees"] }, // Now correctly references reviewer4
     ];
 
     for (const { reviewer, keywords } of expectedKeywords) {
