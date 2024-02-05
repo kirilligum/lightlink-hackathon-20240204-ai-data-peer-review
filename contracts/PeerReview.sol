@@ -231,4 +231,14 @@ contract PeerReview {
     function getReviewersCount() public view returns (uint256) {
         return reviewers.length;
     }
+
+    // Function to get keywords for a specific reviewer
+    function getReviewerKeywords(address reviewerAddress) public view returns (string[] memory) {
+        for (uint256 i = 0; i < reviewers.length; i++) {
+            if (reviewers[i].addr == reviewerAddress) {
+                return reviewers[i].keywords;
+            }
+        }
+        revert("Reviewer not found.");
+    }
 }
