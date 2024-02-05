@@ -77,12 +77,21 @@ contract PeerReviewTest is PRBTest, StdCheats {
 
   function testContainsFunction() public {
     // Test cases where the substring is present in the string
-    assertTrue(peerReview.contains("blockchain technology", "chain"), "The string 'blockchain technology' contains 'chain'");
-    assertTrue(peerReview.contains("gasless transactions are innovative", "less"), "The string 'gasless transactions are innovative' contains 'less'");
+    assertTrue(
+      peerReview.contains("blockchain technology", "chain"),
+      "The string 'blockchain technology' contains 'chain'"
+    );
+    assertTrue(
+      peerReview.contains("gasless transactions are innovative", "less"),
+      "The string 'gasless transactions are innovative' contains 'less'"
+    );
 
     // Test cases where the substring is not present in the string
     assertFalse(peerReview.contains("smart contract", "block"), "The string 'smart contract' does not contain 'block'");
-    assertFalse(peerReview.contains("decentralized finance", "central"), "The string 'decentralized finance' does not contain 'central'");
+    assertFalse(
+      peerReview.contains("decentralized finance", "fee"),
+      "The string 'decentralized finance' does not contain 'fee'"
+    );
   }
 
   function testFindingSuitableReviewers() public {
