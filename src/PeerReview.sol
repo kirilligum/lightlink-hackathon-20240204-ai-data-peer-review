@@ -10,7 +10,7 @@ contract PeerReview {
   constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
     authors = _authors;
     for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
-      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
+      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0), 0));
     }
   }
 
@@ -69,57 +69,88 @@ contract PeerReview {
     require(submissionId < submissions.length, "Invalid submission ID");
     Submission storage submission = submissions[submissionId];
 
-    uint256[] memory scores = new uint256[](reviewers.length);
-    uint256 highestScore = 0;
     address[] memory topReviewers = new address[](3);
     uint256[] memory topReviewersValue = new uint256[](3);
-    // for (uint256 i = 0; i < 3; i++) {
-    //   topReviewers[i] = reviewers[i].addr;
-    // }
 
-    // Loop over all reviewers
     for (uint256 i = 0; i < reviewers.length; i++) {
-      // Loop over each of the reviewer's keywords
+      // reviewers[i].score = 0; // Reset score for each reviewer at the start
       for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
-        // Check if the keyword is in the submission's question or response
         if (
           contains(submission.question, reviewers[i].keywords[j]) ||
           contains(submission.response, reviewers[i].keywords[j])
         ) {
-          scores[i]++;
-          emit ScoreUpdated(reviewers[i].addr, scores[i]);
+          reviewers[i].score++;
+          emit ScoreUpdated(reviewers[i].addr, reviewers[i].score);
         }
       }
 
-      if (scores[i] >= topReviewersValue[0]) {
-        // topReviewersValue[2] = topReviewersValue[1];
-        // topReviewersValue[1] = topReviewersValue[0];
-        // topReviewersValue[0] = scores[i];
-        // topReviewers[2] = topReviewers[1];
-        // topReviewers[1] = topReviewers[0];
+      if (reviewers[i].score >= topReviewersValue[0]) {
         topReviewers[0] = reviewers[i].addr;
-      } else if (scores[i] > topReviewersValue[1]) {
-        // topReviewersValue[2] = topReviewersValue[1];
-        // topReviewersValue[1] = scores[i];
-        // topReviewers[2] = topReviewers[1];
+      } else if (reviewers[i].score > topReviewersValue[1]) {
         topReviewers[1] = reviewers[i].addr;
-      } else if (scores[i] > topReviewersValue[2]) {
-        // topReviewersValue[2] = scores[i];
+      } else if (reviewers[i].score > topReviewersValue[2]) {
         topReviewers[2] = reviewers[i].addr;
       }
-
-      // // Check if the current reviewer is among the top 3
-      // if (scores[i] > highestScore) {
-      //   highestScore = scores[i];
-      //   topReviewers[2] = topReviewers[1];
-      //   topReviewers[1] = topReviewers[0];
-      //   topReviewers[0] = reviewers[i].addr;
-      // }
     }
 
-    // Assign top 3 reviewers to the submission
     submission.selectedReviewers = topReviewers;
   }
+
+  // function findReviewers(uint256 submissionId) public {
+  //   require(submissionId < submissions.length, "Invalid submission ID");
+  //   Submission storage submission = submissions[submissionId];
+
+  //   uint256[] memory scores = new uint256[](reviewers.length);
+  //   uint256 highestScore = 0;
+  //   address[] memory topReviewers = new address[](3);
+  //   uint256[] memory topReviewersValue = new uint256[](3);
+  //   // for (uint256 i = 0; i < 3; i++) {
+  //   //   topReviewers[i] = reviewers[i].addr;
+  //   // }
+
+  //   // Loop over all reviewers
+  //   for (uint256 i = 0; i < reviewers.length; i++) {
+  //     // Loop over each of the reviewer's keywords
+  //     for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
+  //       // Check if the keyword is in the submission's question or response
+  //       if (
+  //         contains(submission.question, reviewers[i].keywords[j]) ||
+  //         contains(submission.response, reviewers[i].keywords[j])
+  //       ) {
+  //         scores[i]++;
+  //         emit ScoreUpdated(reviewers[i].addr, scores[i]);
+  //       }
+  //     }
+
+  //     if (scores[i] >= topReviewersValue[0]) {
+  //       // topReviewersValue[2] = topReviewersValue[1];
+  //       // topReviewersValue[1] = topReviewersValue[0];
+  //       // topReviewersValue[0] = scores[i];
+  //       // topReviewers[2] = topReviewers[1];
+  //       // topReviewers[1] = topReviewers[0];
+  //       topReviewers[0] = reviewers[i].addr;
+  //     } else if (scores[i] > topReviewersValue[1]) {
+  //       // topReviewersValue[2] = topReviewersValue[1];
+  //       // topReviewersValue[1] = scores[i];
+  //       // topReviewers[2] = topReviewers[1];
+  //       topReviewers[1] = reviewers[i].addr;
+  //     } else if (scores[i] > topReviewersValue[2]) {
+  //       // topReviewersValue[2] = scores[i];
+  //       topReviewers[2] = reviewers[i].addr;
+  //     }
+
+  //     // // Check if the current reviewer is among the top 3
+  //     // if (scores[i] > highestScore) {
+  //     //   highestScore = scores[i];
+  //     //   topReviewers[2] = topReviewers[1];
+  //     //   topReviewers[1] = topReviewers[0];
+  //     //   topReviewers[0] = reviewers[i].addr;
+  //     // }
+  //   }
+
+  //   // Assign top 3 reviewers to the submission
+  //   submission.selectedReviewers = topReviewers;
+  // }
 
   // A simple function to check if a string contains a substring
   function contains(string memory _string, string memory _substring) public pure returns (bool) {
