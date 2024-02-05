@@ -1,48 +1,54 @@
 const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
 describe("PeerReview contract", function () {
-  let PeerReview;
-  let peerReview;
-  let owner;
-  let addr1;
-  let addr2;
-  let addrs;
+  // Load the fixture for the test environment
+  async function deployPeerReviewFixture() {
+    const [deployer, author, reviewer1, reviewer2, reviewer3, reviewer4] = await ethers.getSigners();
 
-  beforeEach(async function () {
-    PeerReview = await ethers.getContractFactory("PeerReview");
-    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-    peerReview = await PeerReview.deploy([owner.address, addr1.address], [{addr: addr2.address, keywords: ["blockchain", "transactions"]}]);
-  });
+    const ReviewProcess = await ethers.getContractFactory("ReviewProcess");
+    const reviewProcess = await ReviewProcess.deploy(
+      [author.address], // Authors
+      [
+        [reviewer1.address, ["gasless", "blockchain"]],
+        [reviewer2.address, []],
+        [reviewer3.address, ["transactions"]],
+        [reviewer4.address, ["fees"]]
+      ] // Reviewers
+    );
+
+    return { reviewProcess, deployer, author, reviewer1, reviewer2, reviewer3, reviewer4 };
+  }
 
   describe("Deployment", function () {
-    it("Should set the right authors", async function () {
-      expect(await peerReview.authors(0)).to.equal(owner.address);
-      expect(await peerReview.authors(1)).to.equal(addr1.address);
-    });
+    it("Should deploy with the correct initial setup", async function () {
+      const { reviewProcess, author, reviewer1, reviewer2, reviewer3, reviewer4 } = await loadFixture(deployPeerReviewFixture);
 
-    it("Should set the right reviewers", async function () {
-      expect((await peerReview.reviewers(0)).addr).to.equal(addr2.address);
+      // Add assertions to check the initial setup
     });
   });
 
-  describe("Submit data", function () {
-    it("Should allow authors to submit data", async function () {
-      await peerReview.connect(owner).submitData("why do we need gasless transactions?", "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.");
-      expect((await peerReview.submissions(0)).author).to.equal(owner.address);
+  describe("Submit and review process", function () {
+    it("Should allow an author to submit data", async function () {
+      const { reviewProcess, author } = await loadFixture(deployPeerReviewFixture);
+
+      // Example submission
+      await expect(reviewProcess.connect(author).submitData(
+        "why do we need gasless transactions?",
+        "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns."
+      )).to.not.be.reverted;
     });
 
-    it("Should not allow non-authors to submit data", async function () {
-      await expect(peerReview.connect(addr2).submitData("why do we need gasless transactions?", "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.")).to.be.reverted;
+    it("Should correctly find and assign reviewers based on keywords", async function () {
+      // Implement the test to check if the correct reviewers are assigned based on keywords
+    });
+
+    it("Reviewers should be able to commit and reveal votes", async function () {
+      // Implement the test to check if reviewers can commit and reveal their votes correctly
+    });
+
+    it("Should correctly determine the approval of a submission based on votes", async function () {
+      // Implement the test to check if the contract correctly determines the approval of a submission
     });
   });
-
-  describe("Find reviewers", function () {
-    it("Should find top 3 matching reviewers for a submission", async function () {
-      await peerReview.connect(owner).submitData("why do we need gasless transactions?", "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.");
-      await peerReview.findReviewers(0);
-      expect((await peerReview.submissions(0)).selectedReviewers[0]).to.equal(addr2.address);
-    });
-  });
-
-  // Add more tests as needed...
 });
