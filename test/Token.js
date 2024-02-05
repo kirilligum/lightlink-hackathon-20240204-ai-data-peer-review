@@ -30,9 +30,7 @@ describe("Token contract", function () {
     // To deploy our contract, we just have to call Token.deploy() and await
     // for it to be deployed(), which happens onces its transaction has been
     // mined.
-    const hardhatToken = await Token.deploy();
-
-    await hardhatToken.deployed();
+    const hardhatToken = await Token.deploy().then(f => f.deployed());
 
     // Fixtures can return anything you consider useful for your tests
     return { Token, hardhatToken, owner, addr1, addr2 };

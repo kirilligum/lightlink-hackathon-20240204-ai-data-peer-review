@@ -52,3 +52,4 @@ describe("PeerReview contract", function () {
     });
   });
 });
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
