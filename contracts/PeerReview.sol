@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Event declaration
+event SubmissionCreated(uint256 submissionId);
+
 contract PeerReview {
     constructor(address[] memory _authors, address[] memory _reviewerAddresses)
     {
@@ -57,7 +60,9 @@ contract PeerReview {
         newSubmission.author = msg.sender;
         newSubmission.question = _question;
         newSubmission.response = _response;
-        return submissions.length - 1;
+        uint256 submissionId = submissions.length - 1;
+        emit SubmissionCreated(submissionId);
+        return submissionId;
     }
 
     // Find top 3 matching reviewers for a submission
