@@ -7,7 +7,6 @@ describe("PeerReview Contract", function () {
     const PeerReview = await ethers.getContractFactory("PeerReview");
     const peerReview = await PeerReview.deploy([owner.address], []);
 
-    await peerReview.deployed();
 
     const authors = await peerReview.authors();
     expect(authors[0]).to.equal(owner.address);
