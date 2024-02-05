@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract ReviewProcess {
+contract PeerReview {
     constructor(address[] memory _authors, address[] memory _reviewerAddresses)
     {
         authors = _authors;
