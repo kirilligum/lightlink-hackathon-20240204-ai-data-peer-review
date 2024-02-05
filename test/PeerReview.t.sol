@@ -28,6 +28,17 @@ contract PeerReviewTest is PRBTest, StdCheats {
     peerReview = new PeerReview(authors, reviewers);
   }
 
+  /// @dev Test for verifying the number of authors and reviewers.
+  function testConstructorInitialization() public {
+    // Verify the correct number of authors
+    uint256 authorsCount = peerReview.getAuthorsCount();
+    assertEq(authorsCount, 2, "Incorrect number of authors initialized.");
+
+    // Verify the correct number of reviewers
+    uint256 reviewersCount = peerReview.getReviewersCount();
+    assertEq(reviewersCount, 4, "Incorrect number of reviewers initialized.");
+  }
+
   function testAddingKeywordsByReviewer1() public {
     // Simulate reviewer 1 adding keywords
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer 1's address
