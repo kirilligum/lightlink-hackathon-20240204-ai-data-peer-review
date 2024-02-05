@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("PeerReview contract", function () {
+describe("PeerReview contract", function() {
   // Load the fixture for the test environment
   async function deployPeerReviewFixture() {
     const [deployer, author, reviewer1, reviewer2, reviewer3, reviewer4] = await ethers.getSigners();
@@ -20,16 +20,16 @@ describe("PeerReview contract", function () {
     return { reviewProcess, deployer, author, reviewer1, reviewer2, reviewer3, reviewer4 };
   }
 
-  describe("Deployment", function () {
-    it("Should deploy with the correct initial setup", async function () {
+  describe("Deployment", function() {
+    it("Should deploy with the correct initial setup", async function() {
       const { reviewProcess, author, reviewer1, reviewer2, reviewer3, reviewer4 } = await loadFixture(deployPeerReviewFixture);
 
       // Add assertions to check the initial setup
     });
   });
 
-  describe("Submit and review process", function () {
-    it("Should allow an author to submit data", async function () {
+  describe("Submit and review process", function() {
+    it("Should allow an author to submit data", async function() {
       const { reviewProcess, author } = await loadFixture(deployPeerReviewFixture);
 
       // Example submission
@@ -39,17 +39,6 @@ describe("PeerReview contract", function () {
       )).to.not.be.reverted;
     });
 
-    it("Should correctly find and assign reviewers based on keywords", async function () {
-      // Implement the test to check if the correct reviewers are assigned based on keywords
-    });
-
-    it("Reviewers should be able to commit and reveal votes", async function () {
-      // Implement the test to check if reviewers can commit and reveal their votes correctly
-    });
-
-    it("Should correctly determine the approval of a submission based on votes", async function () {
-      // Implement the test to check if the contract correctly determines the approval of a submission
-    });
   });
 });
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");

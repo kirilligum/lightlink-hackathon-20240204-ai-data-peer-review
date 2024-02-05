@@ -2,13 +2,14 @@
 pragma solidity ^0.8.0;
 
 contract ReviewProcess {
-
-    constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
+    constructor(address[] memory _authors, address[] memory _reviewerAddresses)
+    {
         authors = _authors;
-        for (uint i = 0; i < _reviewerAddresses.length; i++) {
+        for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
             reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
         }
     }
+
     struct Reviewer {
         address addr;
         string[] keywords;
@@ -34,6 +35,18 @@ contract ReviewProcess {
     string public constant LICENSE = "CC BY-NC-SA";
     uint256 public constant ROI_FEE_DENOMINATOR = 100;
 
+    // Updated function for reviewers to add their keywords
+    function addKeywords(string[] memory _keywords) public {
+        bool isReviewer = false;
+        for (uint256 i = 0; i < reviewers.length; i++) {
+            if (reviewers[i].addr == msg.sender) {
+                reviewers[i].keywords = _keywords;
+                isReviewer = true;
+                break;
+            }
+        }
+        require(isReviewer, "Caller is not a reviewer.");
+    }
 
     // Submit a data object
     function submitData(string memory _question, string memory _response)
@@ -215,15 +228,3 @@ contract ReviewProcess {
         return resizedApprovedReviewers;
     }
 }
-    // Updated function for reviewers to add their keywords
-    function addKeywords(string[] memory _keywords) public {
-        bool isReviewer = false;
-        for (uint i = 0; i < reviewers.length; i++) {
-            if (reviewers[i].addr == msg.sender) {
-                reviewers[i].keywords = _keywords;
-                isReviewer = true;
-                break;
-            }
-        }
-        require(isReviewer, "Caller is not a reviewer.");
-    }
