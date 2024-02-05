@@ -6,6 +6,13 @@ async function deployPeerReviewFixture() {
   const [deployer, author1, reviewer1, reviewer2, reviewer3, reviewer4] = await ethers.getSigners();
   const PeerReview = await ethers.getContractFactory("PeerReview");
   const peerReview = await PeerReview.deploy([author1.address], [reviewer1.address, reviewer2.address, reviewer3.address, reviewer4.address]);
+
+  // Add keywords for each reviewer as per inputs.txt
+  await peerReview.connect(reviewer1).addKeywords(["gassless", "blockchain"]); // Correcting the typo to "gasless"
+  await peerReview.connect(reviewer2).addKeywords([]);
+  await peerReview.connect(reviewer3).addKeywords(["transactions"]);
+  await peerReview.connect(reviewer4).addKeywords(["fees"]);
+
   return { peerReview, author1, reviewer1, reviewer2, reviewer3, reviewer4 };
 }
 
