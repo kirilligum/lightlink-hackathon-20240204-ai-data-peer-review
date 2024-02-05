@@ -30,7 +30,8 @@ describe("PeerReview Contract Deployment and Initialization Test", function () {
     const expectedKeywords = [
       { reviewer: reviewer1, keywords: ["gassless", "blockchain"] },
       { reviewer: reviewer2, keywords: [] },
-      { reviewer: reviewer3, keywords: ["transactions", "fees"] },
+      { reviewer: reviewer3, keywords: ["transactions"] },
+      { reviewer: reviewer4, keywords: ["fees"] },
     ];
 
     for (const { reviewer, keywords } of expectedKeywords) {
