@@ -228,3 +228,7 @@ contract PeerReview {
         return resizedApprovedReviewers;
     }
 }
+    // Function to get the number of reviewers
+    function getReviewersCount() public view returns (uint256) {
+        return reviewers.length;
+    }

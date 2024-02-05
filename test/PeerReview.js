@@ -18,8 +18,8 @@ describe("PeerReview Contract Deployment and Initialization Test", function () {
     expect(author0).to.equal(author1.address);
 
     // Access the reviewers array length directly
-    const reviewers = await peerReview.getReviewers();
-    expect(reviewers.length).to.equal(3);
+    const reviewersCount = await peerReview.getReviewersCount();
+    expect(reviewersCount).to.equal(3);
 
     // Check if the initial keywords for reviewers are set correctly (empty at deployment)
     for (let i = 0; i < reviewersCount; i++) {
