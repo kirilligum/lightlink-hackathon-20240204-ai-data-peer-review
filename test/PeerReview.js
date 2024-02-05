@@ -30,6 +30,28 @@ describe("PeerReview Contract Deployment and Initialization Test", function() {
 
   });
 
+  describe("Submission of Data by Author Test", function() {
+    it("Should allow an author to submit data and verify the submission details", async function() {
+      const { peerReview, author1 } = await loadFixture(deployPeerReviewFixture);
+      const question = "why do we need gasless transactions?";
+      const response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+      
+      // Simulate an author submitting a data object
+      const submissionTx = await peerReview.connect(author1).submitData(question, response);
+      const txReceipt = await submissionTx.wait();
+      const submissionEvent = txReceipt.events.find(event => event.event === "SubmissionCreated");
+      const submissionId = submissionEvent.args.submissionId;
+
+      // Fetch the submission details
+      const submission = await peerReview.submissions(submissionId);
+
+      // Verify the submission is stored with the correct author, question, and response
+      expect(submission.author).to.equal(author1.address);
+      expect(submission.question).to.equal(question);
+      expect(submission.response).to.equal(response);
+    });
+  });
+
   it("Check if the initial keywords for reviewers are set correctly", async function() {
     const { peerReview, reviewer1, reviewer2, reviewer3, reviewer4 } = await loadFixture(deployPeerReviewFixture);
 
