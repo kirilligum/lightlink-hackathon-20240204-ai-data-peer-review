@@ -2,6 +2,13 @@
 pragma solidity ^0.8.0;
 
 contract ReviewProcess {
+    address[] private _authors;
+    address[] private _reviewers;
+
+    constructor(address[] memory authors, address[] memory reviewers) {
+        _authors = authors;
+        _reviewers = reviewers;
+    }
     struct Reviewer {
         address addr;
         string[] keywords;
@@ -11,6 +18,7 @@ contract ReviewProcess {
         address author;
         string question;
         string response;
+        string metadata; // Added metadata
         mapping(address => bytes32) commits;
         mapping(address => bool) votes;
         address[] selectedReviewers;
@@ -24,7 +32,7 @@ contract ReviewProcess {
     Reviewer[] public reviewers;
     Submission[] public submissions;
     string public constant LICENSE = "CC BY-NC-SA";
-    uint256 public constant ROI_DENOMINATOR = 100;
+    uint256 public constant ROI_FEE_DENOMINATOR = 100;
 
     // Register an author
     function registerAuthor(address _author) public {
