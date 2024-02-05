@@ -75,6 +75,20 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(returnedKeywords[0], "transactions");
   }
 
+  function testAddingKeywordsByReviewer4() public {
+    // Simulate reviewer 3 adding keywords
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 3's address
+    string[] memory keywords = new string[](1);
+    keywords[0] = "fees";
+    peerReview.addKeywords(keywords);
+    vm.stopPrank();
+
+    // Verify the keywords are correctly added for reviewer 3
+    string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    assertEq(returnedKeywords.length, 1);
+    assertEq(returnedKeywords[0], "fees");
+  }
+
   function testContainsFunction() public {
     // Test cases where the substring is present in the string
     assertTrue(
@@ -131,12 +145,14 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(storedQuestion, question);
     assertEq(storedResponse, response);
   }
+
   /// @dev Test that scores are not 0 after running findReviewers
   function testScoresAreNotZeroAfterFindingReviewers() public {
     // Simulate an author submitting a data object
     vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
     string memory question = "why do we need gasless transactions?";
-    string memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+    string
+      memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
     uint256 submissionId = peerReview.submitData(question, response);
     vm.stopPrank();
 
