@@ -236,6 +236,11 @@ contract PeerReview {
         return reviewers.length;
     }
 
+    // Function to get the number of authors
+    function getAuthorsCount() public view returns (uint256) {
+        return authors.length;
+    }
+
     // Function to get keywords for a specific reviewer
     function getReviewerKeywords(address reviewerAddress) public view returns (string[] memory) {
         for (uint256 i = 0; i < reviewers.length; i++) {
