@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
 async function deployPeerReviewFixture() {
   const [deployer, author1, reviewer1, reviewer2, reviewer3] = await ethers.getSigners();
