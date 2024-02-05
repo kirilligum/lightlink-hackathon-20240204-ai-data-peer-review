@@ -1,0 +1,40 @@
+1. Deployment and Initialization Test
+   - Deploy the contract with predefined authors and reviewers.
+   - Verify if the contract stores the correct number of authors and reviewers.
+   - Check if the initial keywords for reviewers are set correctly.
+
+2. Adding Keywords by Reviewers Test
+   - Simulate a reviewer adding keywords to their profile.
+   - Verify the keywords are correctly added to the reviewer's profile.
+
+3. Submission of Data by Author Test
+   - Simulate an author submitting a data object.
+   - Verify the submission is stored with the correct author, question, and response.
+
+4. Finding Suitable Reviewers Test
+   - Trigger the function to find suitable reviewers for a submission.
+   - Verify the top 3 reviewers are selected based on the highest keyword matches.
+
+5. Committing Votes Test
+   - Simulate reviewers committing their votes using a hash.
+   - Verify the commit hash is stored correctly for each reviewer.
+
+6. Revealing Votes Test
+   - Simulate reviewers revealing their votes.
+   - Verify the votes are revealed correctly and match the previously committed hashes.
+
+7. Approval Determination Test
+   - After all votes are revealed, check if the submission is marked as approved or not based on majority vote.
+   - Verify the isApproved flag is set correctly.
+
+8. Display Reviewers Votes Test
+   - Trigger the function to display how reviewers voted.
+   - Verify the function returns the correct voting outcome for each reviewer.
+
+9. End Voting Phase Test
+   - Simulate ending the voting phase for a submission.
+   - Verify the votingEnded flag is set to true.
+
+10. Get Approved Reviewers Test
+    - Trigger the function to get all reviewers who approved the submission.
+    - Verify the function returns the correct list of reviewers who voted in favor.
