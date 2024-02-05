@@ -5,9 +5,9 @@ contract ReviewProcess {
     address[] private _authors;
     address[] private _reviewers;
 
-    constructor(address[] memory authors, address[] memory reviewers) {
-        _authors = authors;
-        _reviewers = reviewers;
+    constructor(address[] memory _authors, address[] memory _reviewers) {
+        authors = _authors;
+        reviewers = _reviewers;
     }
     struct Reviewer {
         address addr;
@@ -34,17 +34,6 @@ contract ReviewProcess {
     string public constant LICENSE = "CC BY-NC-SA";
     uint256 public constant ROI_FEE_DENOMINATOR = 100;
 
-    // Register an author
-    function registerAuthor(address _author) public {
-        authors.push(_author);
-    }
-
-    // Register a reviewer with keywords
-    function registerReviewer(address _reviewer, string[] memory _keywords)
-        public
-    {
-        reviewers.push(Reviewer(_reviewer, _keywords));
-    }
 
     // Submit a data object
     function submitData(string memory _question, string memory _response)
