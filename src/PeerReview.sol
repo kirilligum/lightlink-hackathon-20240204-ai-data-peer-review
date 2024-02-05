@@ -17,6 +17,7 @@ contract PeerReview {
   struct Reviewer {
     address addr;
     string[] keywords;
+    uint256 score; // Added score field to keep track of each reviewer's score
   }
 
   struct Submission {
