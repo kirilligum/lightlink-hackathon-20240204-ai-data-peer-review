@@ -7,24 +7,6 @@ import { StdCheats } from "forge-std/src/StdCheats.sol";
 
 import { PeerReview } from "../src/PeerReview.sol";
 
-interface IERC20 {
-    function balanceOf(address account) external view returns (uint256);
-    function testAddingKeywordsByReviewer() public {
-        // Simulate reviewer adding keywords
-        vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer's address
-        string[] memory keywords = new string[](2);
-        keywords[0] = "gasless";
-        keywords[1] = "blockchain";
-        peerReview.addKeywords(keywords);
-        vm.stopPrank();
-
-        // Verify the keywords are correctly added
-        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-        assertEq(returnedKeywords.length, 2);
-        assertEq(returnedKeywords[0], "gasless");
-        assertEq(returnedKeywords[1], "blockchain");
-    }
-
 /// @dev If this is your first time with Forge, read this tutorial in the Foundry Book:
 /// https://book.getfoundry.sh/forge/writing-tests
 contract PeerReviewTest is PRBTest, StdCheats {
@@ -46,4 +28,19 @@ contract PeerReviewTest is PRBTest, StdCheats {
         peerReview = new PeerReview(authors, reviewers);
     }
 
+    function testAddingKeywordsByReviewer() public {
+        // Simulate reviewer adding keywords
+        vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer's address
+        string[] memory keywords = new string[](2);
+        keywords[0] = "gasless";
+        keywords[1] = "blockchain";
+        peerReview.addKeywords(keywords);
+        vm.stopPrank();
+
+        // Verify the keywords are correctly added
+        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+        assertEq(returnedKeywords.length, 2);
+        assertEq(returnedKeywords[0], "gasless");
+        assertEq(returnedKeywords[1], "blockchain");
+    }
 }
