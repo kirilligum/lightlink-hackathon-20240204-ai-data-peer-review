@@ -44,7 +44,11 @@ contract PeerReviewTest is PRBTest, StdCheats {
         assertEq(returnedKeywords[1], "blockchain");
     }
 
-    // This test is removed as per inputs.txt, reviewer 2 does not have keywords
+    function testReviewer2HasNoKeywords() public {
+        // Verify the second reviewer has no keywords
+        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
+        assertEq(returnedKeywords.length, 0);
+    }
 
     function testAddingKeywordsByReviewer3() public {
         // Simulate reviewer 3 adding keywords
