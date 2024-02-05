@@ -85,10 +85,19 @@ contract PeerReview {
       }
 
       if (reviewers[i].score >= topReviewersValue[0]) {
+        topReviewersValue[2] = topReviewersValue[1];
+        topReviewersValue[1] = topReviewersValue[0];
+        topReviewersValue[0] = reviewers[i].score;
+        topReviewers[2] = topReviewers[1];
+        topReviewers[1] = topReviewers[0];
         topReviewers[0] = reviewers[i].addr;
       } else if (reviewers[i].score > topReviewersValue[1]) {
+        topReviewersValue[2] = topReviewersValue[1];
+        topReviewersValue[1] = reviewers[i].score;
+        topReviewers[2] = topReviewers[1];
         topReviewers[1] = reviewers[i].addr;
       } else if (reviewers[i].score > topReviewersValue[2]) {
+        topReviewersValue[2] = reviewers[i].score;
         topReviewers[2] = reviewers[i].addr;
       }
     }
