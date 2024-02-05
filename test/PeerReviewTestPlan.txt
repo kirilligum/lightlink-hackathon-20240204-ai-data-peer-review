@@ -1,0 +1,20 @@
+1. Deployment and Initialization Test
+   - Verify contract deployment with initial authors and reviewers.
+2. Adding Keywords by Reviewers Test
+   - Ensure each reviewer can add their expertise keywords successfully.
+3. Submission of Data by Author Test
+   - Test the functionality for an author to submit a data object.
+4. Finding Suitable Reviewers Test
+   - Verify the contract can find and assign the top 3 reviewers based on keyword matches.
+5. Committing Votes Test
+   - Test the ability for reviewers to commit their votes using a hash.
+6. Revealing Votes Test
+   - Ensure that votes can be revealed correctly and tally with the committed votes.
+7. Approval Determination Test
+   - Check if the contract correctly determines the approval of a submission based on majority vote.
+8. Display Reviewers Votes Test
+   - Test the functionality to display how reviewers voted after the reveal phase.
+9. End Voting Phase Test
+   - Verify the functionality to end the voting phase.
+10. Get Approved Reviewers Test
+    - Test the ability to retrieve a list of reviewers who approved the submission.
