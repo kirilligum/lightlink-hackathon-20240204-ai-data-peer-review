@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// Event declaration
-event SubmissionCreated(uint256 submissionId);
-
 contract PeerReview {
+    // Event declaration
+    event SubmissionCreated(uint256 submissionId);
     constructor(address[] memory _authors, address[] memory _reviewerAddresses)
     {
         authors = _authors;
