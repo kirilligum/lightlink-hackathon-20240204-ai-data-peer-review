@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 contract ReviewProcess {
 
-    constructor(address[] memory _authors, Reviewer[] memory _reviewers) {
+    constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
         authors = _authors;
-        for (uint i = 0; i < _reviewers.length; i++) {
-            reviewers.push(_reviewers[i]);
+        for (uint i = 0; i < _reviewerAddresses.length; i++) {
+            reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
         }
     }
     struct Reviewer {
@@ -215,3 +215,14 @@ contract ReviewProcess {
         return resizedApprovedReviewers;
     }
 }
+    // Function for reviewers to add their keywords
+    function addKeywords(string[] memory _keywords) public {
+        for (uint i = 0; i < reviewers.length; i++) {
+            if (reviewers[i].addr == msg.sender) {
+                reviewers[i].keywords = _keywords;
+                return;
+            }
+        }
+        // If the sender is not in the list of reviewers, add them with the provided keywords
+        reviewers.push(Reviewer(msg.sender, _keywords));
+    }
