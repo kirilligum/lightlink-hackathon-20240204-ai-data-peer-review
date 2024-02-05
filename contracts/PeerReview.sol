@@ -227,9 +227,8 @@ contract PeerReview {
 
         return resizedApprovedReviewers;
     }
-}
-// Place this inside the PeerReview contract, at the end before the closing brace.
     // Function to get the number of reviewers
     function getReviewersCount() public view returns (uint256) {
         return reviewers.length;
     }
+}
