@@ -5,7 +5,9 @@ contract ReviewProcess {
 
     constructor(address[] memory _authors, Reviewer[] memory _reviewers) {
         authors = _authors;
-        reviewers = _reviewers;
+        for (uint i = 0; i < _reviewers.length; i++) {
+            reviewers.push(_reviewers[i]);
+        }
     }
     struct Reviewer {
         address addr;
