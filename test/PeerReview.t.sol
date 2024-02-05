@@ -77,7 +77,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
         assertEq(returnedKeywords.length, 1);
         assertEq(returnedKeywords[0], "fees");
     }
-}
+
     function testSubmissionOfDataByAuthor() public {
         // Simulate an author submitting a data object
         vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
@@ -92,3 +92,4 @@ contract PeerReviewTest is PRBTest, StdCheats {
         assertEq(storedQuestion, question);
         assertEq(storedResponse, response);
     }
+}
