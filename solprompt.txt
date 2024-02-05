@@ -1,9 +1,10 @@
-i'm using remix.ethereum.org. create a solidity smart contract that does the following
-set addresses for authors
-set addresses for reviewers
-reviewers submit a list of keywords that they are experts in
+a solidity smart contract that does the following:
+during the construction, sets the addresses of authors and reviewers, sets the license, and sets the ROI_FEE_DENOMINATOR
+the reviewers themselves have to add a list of keywords that they are experts in
 an author posts a data object containing question, response, and whatever meta data that is needed
 the author runs a contract's function to find reviewers. 
-the find_reviewers function finds how many reviewer's keywords are mentionned in the author's question and repsonse and finds 3 reviewers with the highest number of the mentions of their keywords
-these reviewers now have to vote to accept or reject the data object
-this voting is done using commit reveal process so that voters can't see the votes untill the end. 
+the find_reviewers function finds how many reviewer's keywords are mentionned in the author's question and repsonse. then the find_reviewers function finds 3 reviewers with the highest number of the mentions of their keywords and assings those reviewers to review the data object
+these reviewers now have to vote to accept or reject the data object using commit-reveal blind voting scheme. the correct answer is the majority vote. 
+after all voters are revealed, based on a majority vote, mark the submission as approved or not approved 
+create a function to show how the reviewers voted (after reveal)
+
