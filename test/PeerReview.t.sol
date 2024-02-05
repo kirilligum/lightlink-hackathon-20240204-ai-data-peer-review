@@ -78,3 +78,17 @@ contract PeerReviewTest is PRBTest, StdCheats {
         assertEq(returnedKeywords[0], "fees");
     }
 }
+    function testSubmissionOfDataByAuthor() public {
+        // Simulate an author submitting a data object
+        vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
+        string memory question = "why do we need gasless transactions?";
+        string memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+        uint256 submissionId = peerReview.submitData(question, response);
+        vm.stopPrank();
+
+        // Verify the submission is stored with the correct author, question, and response
+        (address author, string memory storedQuestion, string memory storedResponse,,,) = peerReview.submissions(submissionId);
+        assertEq(author, 0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
+        assertEq(storedQuestion, question);
+        assertEq(storedResponse, response);
+    }
