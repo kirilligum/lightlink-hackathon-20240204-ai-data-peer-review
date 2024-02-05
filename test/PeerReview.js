@@ -6,7 +6,6 @@ async function deployPeerReviewFixture() {
   const [deployer, author1, reviewer1, reviewer2, reviewer3] = await ethers.getSigners();
   const PeerReview = await ethers.getContractFactory("PeerReview");
   const peerReview = await PeerReview.deploy([author1.address], [reviewer1.address, reviewer2.address, reviewer3.address]);
-  await peerReview.deployed();
   return { peerReview, author1, reviewer1, reviewer2, reviewer3 };
 }
 
