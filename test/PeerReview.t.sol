@@ -146,7 +146,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(storedResponse, response);
   }
 
-  /// @dev Test that scores are not 0 after running findReviewers
+  /// @dev Test specific scores for each reviewer after running findReviewers
   function testScoresAreNotZeroAfterFindingReviewers() public {
     // Simulate an author submitting a data object
     vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
@@ -159,11 +159,17 @@ contract PeerReviewTest is PRBTest, StdCheats {
     // Trigger the function to find suitable reviewers for the submission
     peerReview.findReviewers(submissionId);
 
-    // Verify the scores of the selected reviewers are not 0
-    address[] memory selectedReviewers = peerReview.getSelectedReviewers(submissionId);
-    for (uint256 i = 0; i < selectedReviewers.length; i++) {
-      uint256 reviewerScore = peerReview.getReviewerScore(selectedReviewers[i]);
-      assertTrue(reviewerScore > 0, "Reviewer score should not be 0");
-    }
+    // Verify specific scores for each reviewer
+    uint256 reviewer1Score = peerReview.getReviewerScore(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    assertEq(reviewer1Score, 2, "Reviewer 1 score should be 2");
+
+    uint256 reviewer2Score = peerReview.getReviewerScore(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
+    assertEq(reviewer2Score, 0, "Reviewer 2 score should be 0");
+
+    uint256 reviewer3Score = peerReview.getReviewerScore(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    assertEq(reviewer3Score, 1, "Reviewer 3 score should be 1");
+
+    uint256 reviewer4Score = peerReview.getReviewerScore(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    assertEq(reviewer4Score, 1, "Reviewer 4 score should be 1");
   }
 }
