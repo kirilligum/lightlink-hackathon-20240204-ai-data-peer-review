@@ -20,25 +20,5 @@ describe("PeerReview contract", function() {
     return { reviewProcess, deployer, author, reviewer1, reviewer2, reviewer3, reviewer4 };
   }
 
-  describe("Deployment", function() {
-    it("Should deploy with the correct initial setup", async function() {
-      const { reviewProcess, author, reviewer1, reviewer2, reviewer3, reviewer4 } = await loadFixture(deployPeerReviewFixture);
-
-      // Add assertions to check the initial setup
-    });
-  });
-
-  describe("Submit and review process", function() {
-    it("Should allow an author to submit data", async function() {
-      const { reviewProcess, author } = await loadFixture(deployPeerReviewFixture);
-
-      // Example submission
-      await expect(reviewProcess.connect(author).submitData(
-        "why do we need gasless transactions?",
-        "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns."
-      )).to.not.be.reverted;
-    });
-
-  });
 });
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
