@@ -44,47 +44,33 @@ contract PeerReviewTest is PRBTest, StdCheats {
         assertEq(returnedKeywords[1], "blockchain");
     }
 
-    function testAddingKeywordsByReviewer2() public {
-        // Simulate reviewer 2 adding keywords
-        vm.startPrank(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65); // Simulate call from reviewer 2's address
-        string[] memory keywords = new string[](2);
-        keywords[0] = "transactions";
-        keywords[1] = "fees";
-        peerReview.addKeywords(keywords);
-        vm.stopPrank();
-
-        // Verify the keywords are correctly added for reviewer 2
-        string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
-        assertEq(returnedKeywords.length, 2);
-        assertEq(returnedKeywords[0], "transactions");
-        assertEq(returnedKeywords[1], "fees");
-    }
+    // This test is removed as per inputs.txt, reviewer 2 does not have keywords
 
     function testAddingKeywordsByReviewer3() public {
         // Simulate reviewer 3 adding keywords
         vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc); // Simulate call from reviewer 3's address
         string[] memory keywords = new string[](1);
-        keywords[0] = "scalability";
+        keywords[0] = "transactions";
         peerReview.addKeywords(keywords);
         vm.stopPrank();
 
         // Verify the keywords are correctly added for reviewer 3
         string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
         assertEq(returnedKeywords.length, 1);
-        assertEq(returnedKeywords[0], "scalability");
+        assertEq(returnedKeywords[0], "transactions");
     }
 
     function testAddingKeywordsByReviewer4() public {
         // Simulate reviewer 4 adding keywords
         vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 4's address
         string[] memory keywords = new string[](1);
-        keywords[0] = "security";
+        keywords[0] = "fees";
         peerReview.addKeywords(keywords);
         vm.stopPrank();
 
         // Verify the keywords are correctly added for reviewer 4
         string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
         assertEq(returnedKeywords.length, 1);
-        assertEq(returnedKeywords[0], "security");
+        assertEq(returnedKeywords[0], "fees");
     }
 }
