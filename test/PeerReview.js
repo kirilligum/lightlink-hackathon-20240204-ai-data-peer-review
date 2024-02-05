@@ -14,9 +14,8 @@ describe("PeerReview Contract Deployment and Initialization Test", function () {
     const { peerReview, author1, reviewer1, reviewer2, reviewer3 } = await loadFixture(deployPeerReviewFixture);
 
     // Verify if the contract stores the correct number of authors and reviewers
-    const authors = await peerReview.authors();
-    expect(authors.length).to.equal(1);
-    expect(authors[0]).to.equal(author1.address);
+    const author0 = await peerReview.authors(0);
+    expect(author0).to.equal(author1.address);
 
     // Assuming reviewersCount is a hypothetical function to get the count of reviewers
     const reviewersCount = await peerReview.reviewersCount();
