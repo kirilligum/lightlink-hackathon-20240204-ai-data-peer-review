@@ -121,7 +121,7 @@ contract PeerReview {
   }
 
   // A simple function to check if a string contains a substring
-  function contains(string memory _string, string memory _substring) private pure returns (bool) {
+  function contains(string memory _string, string memory _substring) public pure returns (bool) {
     bytes memory stringBytes = bytes(_string);
     bytes memory substringBytes = bytes(_substring);
 
