@@ -215,14 +215,15 @@ contract ReviewProcess {
         return resizedApprovedReviewers;
     }
 }
-    // Function for reviewers to add their keywords
+    // Updated function for reviewers to add their keywords
     function addKeywords(string[] memory _keywords) public {
+        bool isReviewer = false;
         for (uint i = 0; i < reviewers.length; i++) {
             if (reviewers[i].addr == msg.sender) {
                 reviewers[i].keywords = _keywords;
-                return;
+                isReviewer = true;
+                break;
             }
         }
-        // If the sender is not in the list of reviewers, add them with the provided keywords
-        reviewers.push(Reviewer(msg.sender, _keywords));
+        require(isReviewer, "Caller is not a reviewer.");
     }
