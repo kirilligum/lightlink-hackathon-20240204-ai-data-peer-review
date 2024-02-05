@@ -268,6 +268,16 @@ contract PeerReview {
     return resizedApprovedReviewers;
   }
 
+  // Function to get the score of a specific reviewer
+  function getReviewerScore(address reviewerAddress) public view returns (uint256) {
+    for (uint256 i = 0; i < reviewers.length; i++) {
+      if (reviewers[i].addr == reviewerAddress) {
+        return reviewers[i].score;
+      }
+    }
+    revert("Reviewer not found.");
+  }
+
   // Function to get the number of reviewers
   function getReviewersCount() public view returns (uint256) {
     return reviewers.length;
