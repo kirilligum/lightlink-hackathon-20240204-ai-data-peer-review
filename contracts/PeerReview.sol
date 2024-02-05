@@ -2,8 +2,6 @@
 pragma solidity ^0.8.0;
 
 contract ReviewProcess {
-    address[] private _authors;
-    address[] private _reviewers;
 
     constructor(address[] memory _authors, address[] memory _reviewers) {
         authors = _authors;
