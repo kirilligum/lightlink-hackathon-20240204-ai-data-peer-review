@@ -26,6 +26,36 @@ contract PeerReviewTest is PRBTest, StdCheats {
     reviewers[3] = 0x976EA74026E726554dB657fA54763abd0C3a0aa9; // Anvil's local test account 6
 
     peerReview = new PeerReview(authors, reviewers);
+
+    // Simulate reviewer 1 adding keywords
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer 1's address
+    string[] memory keywordsReviewer1 = new string[](2);
+    keywordsReviewer1[0] = "gasless";
+    keywordsReviewer1[1] = "blockchain";
+    peerReview.addKeywords(keywordsReviewer1);
+    vm.stopPrank();
+
+    // Simulate reviewer 3 adding keywords
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc); // Simulate call from reviewer 3's address
+    string[] memory keywordsReviewer3 = new string[](1);
+    keywordsReviewer3[0] = "transactions";
+    peerReview.addKeywords(keywordsReviewer3);
+    vm.stopPrank();
+
+    // Simulate reviewer 4 adding keywords
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 3's address
+    string[] memory keywordsReviewer4 = new string[](1);
+    keywordsReviewer4[0] = "fees";
+    peerReview.addKeywords(keywordsReviewer4);
+    vm.stopPrank();
+
+    // Simulate an author submitting a data object
+    vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
+    string memory question = "why do we need gasless transactions?";
+    string
+      memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+    peerReview.submitData(question, response);
+    vm.stopPrank();
   }
 
   /// @dev Test for verifying the number of authors and reviewers.
@@ -40,14 +70,6 @@ contract PeerReviewTest is PRBTest, StdCheats {
   }
 
   function testAddingKeywordsByReviewer1() public {
-    // Simulate reviewer 1 adding keywords
-    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer 1's address
-    string[] memory keywords = new string[](2);
-    keywords[0] = "gasless";
-    keywords[1] = "blockchain";
-    peerReview.addKeywords(keywords);
-    vm.stopPrank();
-
     // Verify the keywords are correctly added for reviewer 1
     string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
     assertEq(returnedKeywords.length, 2);
@@ -62,13 +84,6 @@ contract PeerReviewTest is PRBTest, StdCheats {
   }
 
   function testAddingKeywordsByReviewer3() public {
-    // Simulate reviewer 3 adding keywords
-    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc); // Simulate call from reviewer 3's address
-    string[] memory keywords = new string[](1);
-    keywords[0] = "transactions";
-    peerReview.addKeywords(keywords);
-    vm.stopPrank();
-
     // Verify the keywords are correctly added for reviewer 3
     string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
     assertEq(returnedKeywords.length, 1);
@@ -76,14 +91,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
   }
 
   function testAddingKeywordsByReviewer4() public {
-    // Simulate reviewer 3 adding keywords
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 3's address
-    string[] memory keywords = new string[](1);
-    keywords[0] = "fees";
-    peerReview.addKeywords(keywords);
-    vm.stopPrank();
-
-    // Verify the keywords are correctly added for reviewer 3
+    // Verify the keywords are correctly added for reviewer 4
     string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
     assertEq(returnedKeywords.length, 1);
     assertEq(returnedKeywords[0], "fees");
@@ -108,36 +116,14 @@ contract PeerReviewTest is PRBTest, StdCheats {
     );
   }
 
-  function testFindingSuitableReviewers() public {
-    // Simulate an author submitting a data object
-    vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
-    string memory question = "why do we need gasless transactions?";
-    string
-      memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
-    uint256 submissionId = peerReview.submitData(question, response);
-    vm.stopPrank();
-
-    // Trigger the function to find suitable reviewers for the submission
-    peerReview.findReviewers(submissionId);
-
-    // Verify the top 3 reviewers are selected based on the highest keyword matches
-    address[] memory selectedReviewers = peerReview.getSelectedReviewers(submissionId);
-    assertEq(selectedReviewers.length, 3, "Should select 3 reviewers.");
-    assertEq(selectedReviewers[0], 0x90F79bf6EB2c4f870365E785982E1f101E93b906, "Reviewer 1 should be selected.");
-    assertEq(selectedReviewers[1], 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc, "Reviewer 3 should be selected.");
-    assertEq(selectedReviewers[2], 0x976EA74026E726554dB657fA54763abd0C3a0aa9, "Reviewer 4 should be selected.");
-  }
-
   function testSubmissionOfDataByAuthor() public {
-    // Simulate an author submitting a data object
+    // Verify the submission is stored with the correct author, question, and response
     vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
     string memory question = "why do we need gasless transactions?";
     string
       memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
-    uint256 submissionId = peerReview.submitData(question, response);
-    vm.stopPrank();
-
-    // Verify the submission is stored with the correct author, question, and response
+    uint256 submissionId = 0;
+    // uint256 submissionId = peerReview.submitData(question, response);
     (address author, string memory storedQuestion, string memory storedResponse, , , , , ) = peerReview.submissions(
       submissionId
     );
@@ -146,30 +132,37 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(storedResponse, response);
   }
 
-  /// @dev Test specific scores for each reviewer after running findReviewers
-  function testScoresAreNotZeroAfterFindingReviewers() public {
+  function testFindingSuitableReviewers() public {
     // Simulate an author submitting a data object
-    vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
-    string memory question = "why do we need gasless transactions?";
-    string
-      memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
-    uint256 submissionId = peerReview.submitData(question, response);
-    vm.stopPrank();
+    // vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8); // Simulate call from author's address
+    // string memory question = "why do we need gasless transactions?";
+    // string
+    //   memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
+    // uint256 submissionId = peerReview.submitData(question, response);
+    // vm.stopPrank();
 
     // Trigger the function to find suitable reviewers for the submission
-    peerReview.findReviewers(submissionId);
-
+    // peerReview.findReviewers(submissionId);
+    peerReview.findReviewers(0);
     // Verify specific scores for each reviewer
     uint256 reviewer1Score = peerReview.getReviewerScore(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    console2.log("----- reviewer1Score:", reviewer1Score);
     assertEq(reviewer1Score, 2, "Reviewer 1 score should be 2");
-
     uint256 reviewer2Score = peerReview.getReviewerScore(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
+    console2.log("----- reviewer2Score:", reviewer2Score);
     assertEq(reviewer2Score, 0, "Reviewer 2 score should be 0");
-
     uint256 reviewer3Score = peerReview.getReviewerScore(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    console2.log("----- reviewer3Score:", reviewer3Score);
     assertEq(reviewer3Score, 1, "Reviewer 3 score should be 1");
-
     uint256 reviewer4Score = peerReview.getReviewerScore(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    console2.log("----- reviewer4Score:", reviewer4Score);
     assertEq(reviewer4Score, 1, "Reviewer 4 score should be 1");
+
+    // Verify the top 3 reviewers are selected based on the highest keyword matches
+    address[] memory selectedReviewers = peerReview.getSelectedReviewers(0);
+    assertEq(selectedReviewers.length, 3, "Should select 3 reviewers.");
+    assertEq(selectedReviewers[0], 0x90F79bf6EB2c4f870365E785982E1f101E93b906, "Reviewer 1 should be selected.");
+    assertEq(selectedReviewers[1], 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc, "Reviewer 3 should be selected.");
+    assertEq(selectedReviewers[2], 0x976EA74026E726554dB657fA54763abd0C3a0aa9, "Reviewer 4 should be selected.");
   }
 }
