@@ -19,10 +19,3 @@ async function deployPeerReviewFixture() {
 
   return { reviewProcess, deployer, author, reviewer1, reviewer2, reviewer3, reviewer4 };
 }
-
-describe("PeerReview contract tests", function() {
-  it("Should deploy the contract with predefined authors and reviewers and verify their setup", async function() {
-    const { reviewProcess, author, reviewer1, reviewer2, reviewer3, reviewer4 } = await loadFixture(deployPeerReviewFixture);
-
-  });
-});
