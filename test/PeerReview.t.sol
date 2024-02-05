@@ -75,18 +75,14 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(returnedKeywords[0], "transactions");
   }
 
-  function testAddingKeywordsByReviewer4() public {
-    // Simulate reviewer 4 adding keywords
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9); // Simulate call from reviewer 4's address
-    string[] memory keywords = new string[](1);
-    keywords[0] = "fees";
-    peerReview.addKeywords(keywords);
-    vm.stopPrank();
+  function testContainsFunction() public {
+    // Test cases where the substring is present in the string
+    assertTrue(peerReview.testContains("blockchain technology", "chain"), "The string 'blockchain technology' contains 'chain'");
+    assertTrue(peerReview.testContains("gasless transactions are innovative", "less"), "The string 'gasless transactions are innovative' contains 'less'");
 
-    // Verify the keywords are correctly added for reviewer 4
-    string[] memory returnedKeywords = peerReview.getReviewerKeywords(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    assertEq(returnedKeywords.length, 1);
-    assertEq(returnedKeywords[0], "fees");
+    // Test cases where the substring is not present in the string
+    assertFalse(peerReview.testContains("smart contract", "block"), "The string 'smart contract' does not contain 'block'");
+    assertFalse(peerReview.testContains("decentralized finance", "central"), "The string 'decentralized finance' does not contain 'central'");
   }
 
   function testFindingSuitableReviewers() public {
