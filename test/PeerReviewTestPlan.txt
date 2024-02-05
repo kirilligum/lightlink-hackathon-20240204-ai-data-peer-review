@@ -1,20 +1,40 @@
 1. Deployment and Initialization Test
-   - Verify contract deployment with initial authors and reviewers.
+   - Deploy the contract with predefined authors and reviewers.
+   - Verify if the contract stores the correct number of authors and reviewers.
+   - Check if the initial keywords for reviewers are set correctly.
+
 2. Adding Keywords by Reviewers Test
-   - Ensure each reviewer can add their expertise keywords successfully.
+   - Simulate a reviewer adding keywords to their profile.
+   - Verify the keywords are correctly added to the reviewer's profile.
+
 3. Submission of Data by Author Test
-   - Test the functionality for an author to submit a data object.
+   - Simulate an author submitting a data object.
+   - Verify the submission is stored with the correct author, question, and response.
+
 4. Finding Suitable Reviewers Test
-   - Verify the contract can find and assign the top 3 reviewers based on keyword matches.
+   - Trigger the function to find suitable reviewers for a submission.
+   - Verify the top 3 reviewers are selected based on the highest keyword matches.
+
 5. Committing Votes Test
-   - Test the ability for reviewers to commit their votes using a hash.
+   - Simulate reviewers committing their votes using a hash.
+   - Verify the commit hash is stored correctly for each reviewer.
+
 6. Revealing Votes Test
-   - Ensure that votes can be revealed correctly and tally with the committed votes.
+   - Simulate reviewers revealing their votes.
+   - Verify the votes are revealed correctly and match the previously committed hashes.
+
 7. Approval Determination Test
-   - Check if the contract correctly determines the approval of a submission based on majority vote.
+   - After all votes are revealed, check if the submission is marked as approved or not based on majority vote.
+   - Verify the isApproved flag is set correctly.
+
 8. Display Reviewers Votes Test
-   - Test the functionality to display how reviewers voted after the reveal phase.
+   - Trigger the function to display how reviewers voted.
+   - Verify the function returns the correct voting outcome for each reviewer.
+
 9. End Voting Phase Test
-   - Verify the functionality to end the voting phase.
+   - Simulate ending the voting phase for a submission.
+   - Verify the votingEnded flag is set to true.
+
 10. Get Approved Reviewers Test
-    - Test the ability to retrieve a list of reviewers who approved the submission.
+    - Trigger the function to get all reviewers who approved the submission.
+    - Verify the function returns the correct list of reviewers who voted in favor.
