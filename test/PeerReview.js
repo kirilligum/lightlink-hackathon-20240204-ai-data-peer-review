@@ -1,18 +1,20 @@
-const ReviewProcess = artifacts.require("ReviewProcess");
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
-contract("ReviewProcess Deployment and Initialization", (accounts) => {
-  it("should deploy with predefined authors and reviewers", async () => {
-    const authors = [accounts[1], accounts[2]];
-    const reviewers = [accounts[3], accounts[4], accounts[5]];
+// Load the fixture for the test environment
+async function deployPeerReviewFixture() {
+  const [deployer, author, reviewer1, reviewer2, reviewer3, reviewer4] = await ethers.getSigners();
 
-    const reviewProcessInstance = await ReviewProcess.new(authors, reviewers);
-
-    const storedAuthors = await reviewProcessInstance.authors();
-    const storedReviewersCount = await reviewProcessInstance.reviewersCount();
-
-    assert.equal(storedAuthors.length, authors.length, "Incorrect number of authors stored");
-    assert.equal(storedReviewersCount, reviewers.length, "Incorrect number of reviewers stored");
-
-    // Additional checks for initial keywords for reviewers can be added here
-  });
-});
+  const ReviewProcess = await ethers.getContractFactory("ReviewProcess");
+  const reviewProcess = await ReviewProcess.deploy(
+    [author.address], // Authors
+    [
+      reviewer1.address,
+      reviewer2.address,
+      reviewer3.address,
+      reviewer4.address,
+    ] // Reviewers
+  );
+  return { reviewProcess, deployer, author, reviewer1, reviewer2, reviewer3, reviewer4 };
+}
