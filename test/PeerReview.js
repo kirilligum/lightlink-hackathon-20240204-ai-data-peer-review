@@ -39,7 +39,7 @@ describe("PeerReview Contract Deployment and Initialization Test", function() {
       // Simulate an author submitting a data object
       const submissionTx = await peerReview.connect(author1).submitData(question, response);
       const txReceipt = await submissionTx.wait();
-      const submissionEvent = txReceipt.events.find(event => event.event === "SubmissionCreated");
+      const submissionEvent = txReceipt.events.filter(event => event.event === "SubmissionCreated")[0];
       const submissionId = submissionEvent.args.submissionId;
 
       // Fetch the submission details
