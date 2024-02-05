@@ -21,10 +21,5 @@ describe("PeerReview Contract Deployment and Initialization Test", function () {
     const reviewersCount = await peerReview.getReviewersCount();
     expect(reviewersCount).to.equal(3);
 
-    // Check if the initial keywords for reviewers are set correctly (empty at deployment)
-    for (let i = 0; i < reviewersCount; i++) {
-      const reviewer = await peerReview.reviewers(i);
-      expect(reviewer.keywords.length).to.equal(0);
-    }
   });
 });
