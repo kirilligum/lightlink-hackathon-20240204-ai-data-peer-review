@@ -143,4 +143,30 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertEq(selectedReviewers[1], 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc, "Reviewer 3 should be selected.");
     assertEq(selectedReviewers[2], 0x976EA74026E726554dB657fA54763abd0C3a0aa9, "Reviewer 4 should be selected.");
   }
+
+  /// @dev Test for committing votes by reviewers
+  function testCommittingVotes() public {
+    // Simulate reviewers committing their votes using a hash
+    bytes32 commitHash1 = 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee;
+    bytes32 commitHash2 = 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c;
+    bytes32 commitHash3 = 0xd3b8e57201f503553e68903eabd106060dd2e648c44f5c1b087cc45cebb1fbf7;
+
+    // Commit votes for three reviewers
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.commitVote(0, commitHash1);
+    vm.stopPrank();
+
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.commitVote(0, commitHash2);
+    vm.stopPrank();
+
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.commitVote(0, commitHash3);
+    vm.stopPrank();
+
+    // Verify the commit hash is stored correctly for each reviewer
+    assertEq(peerReview.submissions(0).commits(0x90F79bf6EB2c4f870365E785982E1f101E93b906), commitHash1, "Commit hash for reviewer 1 does not match.");
+    assertEq(peerReview.submissions(0).commits(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc), commitHash2, "Commit hash for reviewer 3 does not match.");
+    assertEq(peerReview.submissions(0).commits(0x976EA74026E726554dB657fA54763abd0C3a0aa9), commitHash3, "Commit hash for reviewer 4 does not match.");
+  }
 }
