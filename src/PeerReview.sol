@@ -2,7 +2,8 @@
 pragma solidity 0.8.9;
 
 import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequesterV0.sol";
-import "@openzeppelin/contracts@4.9.5/access/Ownable.sol";
+// import "@openzeppelin/contracts@4.9.5/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 // contract PeerReview {
 contract PeerReview is RrpRequesterV0, Ownable {
