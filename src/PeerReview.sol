@@ -72,6 +72,7 @@ contract PeerReview {
     address[] memory topReviewers = new address[](3);
     uint256[] memory topReviewersValue = new uint256[](3);
 
+    uint256[] memory scores = new uint256[](reviewers.length);
     for (uint256 i = 0; i < reviewers.length; i++) {
       // reviewers[i].score = 0; // Reset score for each reviewer at the start
       for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
@@ -79,25 +80,27 @@ contract PeerReview {
           contains(submission.question, reviewers[i].keywords[j]) ||
           contains(submission.response, reviewers[i].keywords[j])
         ) {
-          reviewers[i].score++;
+          // reviewers[i].score++;
+          scores[i]++;
           emit ScoreUpdated(reviewers[i].addr, reviewers[i].score);
         }
       }
 
-      if (reviewers[i].score >= topReviewersValue[0]) {
+      // if (reviewers[i].score >= topReviewersValue[0]) {
+      if (scores[i] >= topReviewersValue[0]) {
         topReviewersValue[2] = topReviewersValue[1];
         topReviewersValue[1] = topReviewersValue[0];
-        topReviewersValue[0] = reviewers[i].score;
+        topReviewersValue[0] = scores[i];
         topReviewers[2] = topReviewers[1];
         topReviewers[1] = topReviewers[0];
         topReviewers[0] = reviewers[i].addr;
-      } else if (reviewers[i].score > topReviewersValue[1]) {
+      } else if (scores[i] > topReviewersValue[1]) {
         topReviewersValue[2] = topReviewersValue[1];
-        topReviewersValue[1] = reviewers[i].score;
+        topReviewersValue[1] = scores[i];
         topReviewers[2] = topReviewers[1];
         topReviewers[1] = reviewers[i].addr;
-      } else if (reviewers[i].score > topReviewersValue[2]) {
-        topReviewersValue[2] = reviewers[i].score;
+      } else if (scores[i] > topReviewersValue[2]) {
+        topReviewersValue[2] = scores[i];
         topReviewers[2] = reviewers[i].addr;
       }
     }
