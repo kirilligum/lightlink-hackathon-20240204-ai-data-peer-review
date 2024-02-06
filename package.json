@@ -1,23 +1,39 @@
 {
-  "name": "lightlink-hackathon-20240204-ai-data-peer-review",
+  "name": "@prb/foundry-template",
+  "description": "Foundry-based template for developing Solidity smart contracts",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:kirilligum/lightlink-hackathon-20240204-ai-data-peer-review-.git",
-  "author": "Kirill Igumenshchev <kirill.igum@gmail.com>",
-  "license": "MIT",
+  "author": {
+    "name": "Paul Razvan Berg",
+    "url": "https://github.com/PaulRBerg"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1"
+  },
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",
-    "@nomicfoundation/hardhat-ethers": "^3.0.5",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "@nomicfoundation/hardhat-verify": "^2.0.4",
-    "@typechain/ethers-v6": "^0.5.1",
-    "@typechain/hardhat": "^9.1.0",
-    "chai": "4",
-    "ethers": "^6.10.0",
-    "hardhat": "^2.19.5",
-    "hardhat-gas-reporter": "^1.0.10",
-    "solidity-coverage": "^0.8.6",
-    "typechain": "^8.3.2"
+    "@prb/test": "^0.6.4",
+    "forge-std": "github:foundry-rs/forge-std#v1.7.5",
+    "prettier": "^3.0.0",
+    "solhint": "^3.6.2"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "forge",
+    "foundry",
+    "smart-contracts",
+    "solidity",
+    "template"
+  ],
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf cache out",
+    "build": "forge build",
+    "lint": "bun run lint:sol && bun run prettier:check",
+    "lint:sol": "forge fmt --check && bun solhint {script,src,test}/**/*.sol",
+    "prettier:check": "prettier --check **/*.{json,md,yml} --ignore-path=.prettierignore",
+    "prettier:write": "prettier --write **/*.{json,md,yml} --ignore-path=.prettierignore",
+    "test": "forge test",
+    "test:coverage": "forge coverage",
+    "test:coverage:report": "forge coverage --report lcov && genhtml lcov.info --branch-coverage --output-dir coverage"
   }
 }
