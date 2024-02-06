@@ -141,9 +141,13 @@ contract PeerReviewTest is PRBTest, StdCheats {
     // Verify the top 3 reviewers are selected based on the highest keyword matches
     address[] memory selectedReviewers = peerReview.getSelectedReviewers(0);
     assertEq(selectedReviewers.length, 3, "Should select 3 reviewers.");
+    // these were checked without shuffling. and then hardcoded with shuffling included.
+    console2.log("selectedReviewers[0]", selectedReviewers[0]);
+    console2.log("selectedReviewers[1]", selectedReviewers[1]);
+    console2.log("selectedReviewers[2]", selectedReviewers[2]);
     assertEq(selectedReviewers[0], 0x90F79bf6EB2c4f870365E785982E1f101E93b906, "Reviewer 1 should be selected.");
-    assertEq(selectedReviewers[1], 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc, "Reviewer 3 should be selected.");
-    assertEq(selectedReviewers[2], 0x976EA74026E726554dB657fA54763abd0C3a0aa9, "Reviewer 4 should be selected.");
+    assertEq(selectedReviewers[1], 0x976EA74026E726554dB657fA54763abd0C3a0aa9, "Reviewer 4 should be selected.");
+    assertEq(selectedReviewers[2], 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc, "Reviewer 3 should be selected.");
   }
 
   /// @dev Test for committing votes by reviewers

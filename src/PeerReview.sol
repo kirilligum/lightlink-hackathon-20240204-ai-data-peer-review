@@ -116,7 +116,6 @@ contract PeerReview {
     }
 
     submission.selectedReviewers = topReviewers;
-    shuffleReviewers(submissionId); // Shuffle reviewers based on the seed
   }
 
   // A simple function to check if a string contains a substring
@@ -302,7 +301,7 @@ contract PeerReview {
     }
     revert("Reviewer not found.");
   }
-}
+
   // Updated function to shuffle a copy of the reviewers and store it in the Submission struct
   function shuffleReviewers(uint256 submissionId) internal {
     require(submissionId < submissions.length, "Invalid submission ID");
@@ -318,3 +317,4 @@ contract PeerReview {
     }
     submission.shuffledReviewers = shuffledReviewers;
   }
+}
