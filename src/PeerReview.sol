@@ -223,6 +223,13 @@ contract PeerReview {
     submission.votingEnded = true;
   }
 
+  // Function to check if the voting phase has ended for a submission
+  function getVotingEnded(uint256 submissionId) public view returns (bool) {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    return submission.votingEnded;
+  }
+
   // Get all approved reviewers for a submission
   function getApprovedReviewers(uint256 submissionId) public view returns (address[] memory) {
     require(submissionId < submissions.length, "Invalid submission ID");
