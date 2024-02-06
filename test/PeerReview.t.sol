@@ -193,9 +193,9 @@ contract PeerReviewTest is PRBTest, StdCheats {
     bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
     console2.log("commitHash1:", commitHash1);
     bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
-    console2.log("commitHash1:", commitHash1);
+    console2.log("commitHash2:", commitHash2);
     bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
-    console2.log("commitHash1:", commitHash1);
+    console2.log("commitHash3:", commitHash3);
 
     // Simulate reviewers committing their votes
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
