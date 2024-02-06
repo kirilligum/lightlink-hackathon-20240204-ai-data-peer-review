@@ -288,6 +288,8 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertTrue(votingEnded, "Voting phase should be ended.");
   }
 
+  /// @dev Test for displaying how reviewers voted
+  function testDisplayReviewersVotes() public {
     // Execute: Trigger the function to display how reviewers voted
     (address[] memory reviewers, bool[] memory votes) = peerReview.getReviewersVotes(0);
 
