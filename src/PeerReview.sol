@@ -79,14 +79,21 @@ contract PeerReview {
     address[] memory topReviewers = new address[](3);
     uint256[] memory topReviewersValue = new uint256[](3);
 
-    uint256[] memory scores = new uint256[](reviewers.length);
-    for (uint256 i = 0; i < reviewers.length; i++) {
-      for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
-        if (
-          contains(submission.question, reviewers[i].keywords[j]) ||
-          contains(submission.response, reviewers[i].keywords[j])
-        ) {
-          scores[i]++;
+    uint256[] memory scores = new uint256[](submission.shuffledReviewers.length);
+    for (uint256 i = 0; i < submission.shuffledReviewers.length; i++) {
+      address reviewerAddr = submission.shuffledReviewers[i];
+      // Find the reviewer in the global reviewers array to access their keywords
+      for (uint256 k = 0; k < reviewers.length; k++) {
+        if (reviewers[k].addr == reviewerAddr) {
+          for (uint256 j = 0; j < reviewers[k].keywords.length; j++) {
+            if (
+              contains(submission.question, reviewers[k].keywords[j]) ||
+              contains(submission.response, reviewers[k].keywords[j])
+            ) {
+              scores[i]++;
+            }
+          }
+          break; // Break the loop once the matching reviewer is found
         }
       }
 
@@ -96,15 +103,15 @@ contract PeerReview {
         topReviewersValue[0] = scores[i];
         topReviewers[2] = topReviewers[1];
         topReviewers[1] = topReviewers[0];
-        topReviewers[0] = reviewers[i].addr;
+        topReviewers[0] = reviewerAddr;
       } else if (scores[i] > topReviewersValue[1]) {
         topReviewersValue[2] = topReviewersValue[1];
         topReviewersValue[1] = scores[i];
         topReviewers[2] = topReviewers[1];
-        topReviewers[1] = reviewers[i].addr;
+        topReviewers[1] = reviewerAddr;
       } else if (scores[i] > topReviewersValue[2]) {
         topReviewersValue[2] = scores[i];
-        topReviewers[2] = reviewers[i].addr;
+        topReviewers[2] = reviewerAddr;
       }
     }
 
