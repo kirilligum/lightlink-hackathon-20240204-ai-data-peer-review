@@ -1,48 +1,70 @@
 # Front End Layout Schema (Single Page)
 
 ## welcome
-- **Text**: "Welcome to the Peer Review Platform"
-- **Text**: "Authors and reviewers have been assigned during the contract creation process"
-- **Text**: "Authors: {authors}"
-- **Text**: "Reviewers: {reviewers}"
+- Welcome to the Peer Review Platform
+- Authors and reviewers have been assigned during the contract creation process
+- Authors: {authors}
+- Reviewers: {reviewers}
 
 ## Reviewers
-- **Text**: "Reviewers: Update Your Keywords"
-- **Form**: Keywords Update
-  - Keywords (Textarea)
-  - Button: "Update"
+- Reviewers: Update Your Keywords
+- __Keywords__
+- [ Update ]
 
 ## Authors
-- **Text**: "Authors: Submit Your Data Object"
-- **Form**: Data Submission
-  - Question (Input field)
-  - Response (Textarea)
-  - Button: "Submit"
-  - Button: "find reviewers"
+- Authors: Submit Your Data Object
+- _question_
+- _response_
+- [ submit ]
+- [ find reviewers ]
 
 ## Reviewers
-- **Text**: "Reviewers: Review Assignments"
-  - List of Assignments
-    - Text: Question
-    - Text: Response
-    - Form: Review
-      - vote+secret=>commitHash (Input field)
-      - Button: "Submit Blind Vote"
+- Reviewers: Review Assignments
+- { Question }
+- { Response }
+- _commitHash_
+- [ Submit Blind Vote ]
 
 ## end vote
-- Button: "end vote"
+- [ end vote ]
 
 ## Reviewers: Reveal
-- **Form**: Reveal Your Vote
-  - vote (Input field)
-  - secret (Input field)
-  - Button: "Submit"
+- Reveal Your Vote
+- _vote_
+- _secret_
+- [ Submit ]
 
 ## generate Decision
-- **Text**: decision based on majority vote
-    - Button: get decision
+- decision based on majority vote
+- [ get decision ]
 
 ## decision
+- {decision}
 
-- **Text**: "Your Submissions"
-  - List of Submissions with Status (Pending, Approved, Rejected)
+
+fields:
+
+LICENSE Read function
+ROI_FEE_DENOMINATOR Read function
+addKeywords Write function with args
+authors Read function with args
+commitVote  Write function with args
+contains  Payable write function with args
+createCommitHashFalse Payable write function with args
+createCommitHashTrue  Payable write function with args
+endVoting Write function with args
+findReviewers Write function with args
+getApprovedReviewers  Read function with args
+getAuthorsCount Read function
+getCommitHash Read function with args
+getReviewerKeywords Read function with args
+getReviewerVote Read function with args
+getReviewersCount Read function
+getReviewersVotes Read function with args
+getSelectedReviewers  Read function with args
+getVotingEnded  Read function with args
+isApproved  Read function with args
+revealVote  Write function with args
+reviewers Read function with args
+submissions Read function with args
+submitData  Write function with args
