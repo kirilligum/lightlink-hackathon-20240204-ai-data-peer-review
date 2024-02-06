@@ -71,6 +71,7 @@ contract PeerReview {
 
   // Find top 3 matching reviewers for a submission
   function findReviewers(uint256 submissionId) public {
+    shuffleReviewers(submissionId); // Shuffle the original reviewers array based on the submission's seed
     require(submissionId < submissions.length, "Invalid submission ID");
     Submission storage submission = submissions[submissionId];
 
@@ -294,14 +295,13 @@ contract PeerReview {
     revert("Reviewer not found.");
   }
 }
-  // Function to shuffle reviewers based on the submission's seed
+  // Function to shuffle the original reviewers array based on the submission's seed
   function shuffleReviewers(uint256 submissionId) internal {
     require(submissionId < submissions.length, "Invalid submission ID");
     Submission storage submission = submissions[submissionId];
     uint256 seed = submission.seed;
-    for (uint256 i = 0; i < submission.selectedReviewers.length; i++) {
+    for (uint256 i = 0; i < reviewers.length; i++) {
       uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
-      (submission.selectedReviewers[i], submission.selectedReviewers[j]) = (submission.selectedReviewers[j], submission.selectedReviewers[i]);
+      (reviewers[i], reviewers[j]) = (reviewers[j], reviewers[i]);
     }
-    submission.randomizedReviewers = submission.selectedReviewers;
   }
