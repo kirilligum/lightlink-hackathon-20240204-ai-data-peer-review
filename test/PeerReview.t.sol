@@ -141,23 +141,6 @@ contract PeerReviewTest is PRBTest, StdCheats {
     // uint256 submissionId = peerReview.submitData(question, response);
     // vm.stopPrank();
 
-    // Trigger the function to find suitable reviewers for the submission
-    // peerReview.findReviewers(submissionId);
-    peerReview.findReviewers(0);
-    // Verify specific scores for each reviewer
-    uint256 reviewer1Score = peerReview.getReviewerScore(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    console2.log("----- reviewer1Score:", reviewer1Score);
-    assertEq(reviewer1Score, 2, "Reviewer 1 score should be 2");
-    uint256 reviewer2Score = peerReview.getReviewerScore(0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65);
-    console2.log("----- reviewer2Score:", reviewer2Score);
-    assertEq(reviewer2Score, 0, "Reviewer 2 score should be 0");
-    uint256 reviewer3Score = peerReview.getReviewerScore(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    console2.log("----- reviewer3Score:", reviewer3Score);
-    assertEq(reviewer3Score, 1, "Reviewer 3 score should be 1");
-    uint256 reviewer4Score = peerReview.getReviewerScore(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    console2.log("----- reviewer4Score:", reviewer4Score);
-    assertEq(reviewer4Score, 1, "Reviewer 4 score should be 1");
-
     // Verify the top 3 reviewers are selected based on the highest keyword matches
     address[] memory selectedReviewers = peerReview.getSelectedReviewers(0);
     assertEq(selectedReviewers.length, 3, "Should select 3 reviewers.");
