@@ -83,15 +83,15 @@ contract PeerReviewTest is PRBTest, StdCheats {
 
     // Simulate reviewers revealing their votes
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    peerReview.revealVote(0, true, 0x03301b3328418a6f426a79f8f4519483);
+    peerReview.revealVote(0, true, hex"03301b3328418a6f426a79f8f4519483");
     vm.stopPrank();
 
     vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    peerReview.revealVote(0, true, 0x8e0b79052a49a89943887bc0fbc72882);
+    peerReview.revealVote(0, true, hex"8e0b79052a49a89943887bc0fbc72882");
     vm.stopPrank();
 
     vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    peerReview.revealVote(0, false, 0x512da4641020358f91de50b68983ce05);
+    peerReview.revealVote(0, false, hex"512da4641020358f91de50b68983ce05");
     vm.stopPrank();
 
     // Verify the votes are revealed correctly
