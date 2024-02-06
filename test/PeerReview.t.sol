@@ -324,4 +324,14 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertTrue(votes[1], "Reviewer 3's vote should be true.");
     assertFalse(votes[2], "Reviewer 4's vote should be false.");
   }
+  /// @dev Test for assigning and verifying the seed in a submission
+  function testAssigningAndVerifyingSeed() public {
+    // Assign a seed to the first submission
+    uint256 seed = 9938158688784456170876542658114065742897213138659494805615283452600225340487;
+    peerReview.assignSeed(0, seed);
+
+    // Retrieve the submission to verify the seed is correctly assigned
+    (, , , , , , , , , , uint256 storedSeed) = peerReview.submissions(0);
+    assertEq(storedSeed, seed, "The stored seed does not match the assigned seed.");
+  }
 }
