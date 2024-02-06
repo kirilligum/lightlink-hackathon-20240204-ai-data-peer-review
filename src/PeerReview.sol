@@ -8,7 +8,7 @@ contract PeerReview {
   constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
     authors = _authors;
     for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
-      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0), 0));
+      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
     }
   }
 
