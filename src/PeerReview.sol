@@ -4,17 +4,20 @@ pragma solidity ^0.8.0;
 contract PeerReview {
   // Event declaration
   event SubmissionCreated(uint256 submissionId);
+  // Event to emit the score of a reviewer
+  event ScoreUpdated(address reviewer, uint256 score);
 
   constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
     authors = _authors;
     for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
-      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
+      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0), 0));
     }
   }
 
   struct Reviewer {
     address addr;
     string[] keywords;
+    uint256 score; // Added score field to keep track of each reviewer's score
   }
 
   struct Submission {
@@ -68,32 +71,33 @@ contract PeerReview {
 
     address[] memory topReviewers = new address[](3);
     uint256[] memory topReviewersValue = new uint256[](3);
-    uint256[] memory scores = new uint256[](reviewers.length);
 
     for (uint256 i = 0; i < reviewers.length; i++) {
+      // reviewers[i].score = 0; // Reset score for each reviewer at the start
       for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
         if (
           contains(submission.question, reviewers[i].keywords[j]) ||
           contains(submission.response, reviewers[i].keywords[j])
         ) {
-          scores[i]++;
+          reviewers[i].score++;
+          emit ScoreUpdated(reviewers[i].addr, reviewers[i].score);
         }
       }
 
-      if (scores[i] >= topReviewersValue[0]) {
+      if (reviewers[i].score >= topReviewersValue[0]) {
         topReviewersValue[2] = topReviewersValue[1];
         topReviewersValue[1] = topReviewersValue[0];
-        topReviewersValue[0] = scores[i];
+        topReviewersValue[0] = reviewers[i].score;
         topReviewers[2] = topReviewers[1];
         topReviewers[1] = topReviewers[0];
         topReviewers[0] = reviewers[i].addr;
-      } else if (scores[i] > topReviewersValue[1]) {
+      } else if (reviewers[i].score > topReviewersValue[1]) {
         topReviewersValue[2] = topReviewersValue[1];
-        topReviewersValue[1] = scores[i];
+        topReviewersValue[1] = reviewers[i].score;
         topReviewers[2] = topReviewers[1];
         topReviewers[1] = reviewers[i].addr;
-      } else if (scores[i] > topReviewersValue[2]) {
-        topReviewersValue[2] = scores[i];
+      } else if (reviewers[i].score > topReviewersValue[2]) {
+        topReviewersValue[2] = reviewers[i].score;
         topReviewers[2] = reviewers[i].addr;
       }
     }
@@ -271,6 +275,16 @@ contract PeerReview {
     }
 
     return resizedApprovedReviewers;
+  }
+
+  // Function to get the score of a specific reviewer
+  function getReviewerScore(address reviewerAddress) public view returns (uint256) {
+    for (uint256 i = 0; i < reviewers.length; i++) {
+      if (reviewers[i].addr == reviewerAddress) {
+        return reviewers[i].score;
+      }
+    }
+    revert("Reviewer not found.");
   }
 
   // Function to get the number of reviewers
