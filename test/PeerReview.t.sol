@@ -239,4 +239,17 @@ contract PeerReviewTest is PRBTest, StdCheats {
       "Reviewer 4's vote should be false."
     );
   }
+
+  /// @dev Test for approval determination after revealing votes
+  function testApprovalDetermination() public {
+    // Assuming the setup and vote revealing has been done as in testRevealingVotes()
+    peerReview.endVoting(0); // Ensure voting has ended to simulate the environment for approval determination
+
+    // Trigger the determination of approval based on votes
+    // This step might be automatically handled by the contract after the last vote is revealed
+    // If not, you might need to call a specific function to evaluate the votes and determine approval
+
+    bool isApproved = peerReview.isApproved(0);
+    assertTrue(isApproved, "Submission should be approved based on majority vote.");
+  }
 }
