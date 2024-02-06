@@ -58,6 +58,48 @@ contract PeerReviewTest is PRBTest, StdCheats {
     vm.stopPrank();
   }
 
+  /// @dev Test for revealing votes by reviewers
+  function testRevealingVotes() public {
+    // Commit votes for three reviewers
+    bytes32 commitHash1 = 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee;
+    bytes32 commitHash2 = 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c;
+    bytes32 commitHash3 = 0xd3b8e57201f503553e68903eabd106060dd2e648c44f5c1b087cc45cebb1fbf7;
+
+    // Simulate reviewers committing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.commitVote(0, commitHash1);
+    vm.stopPrank();
+
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.commitVote(0, commitHash2);
+    vm.stopPrank();
+
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.commitVote(0, commitHash3);
+    vm.stopPrank();
+
+    // End voting to allow revealing
+    peerReview.endVoting(0);
+
+    // Simulate reviewers revealing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.revealVote(0, true, 0x03301b3328418a6f426a79f8f4519483);
+    vm.stopPrank();
+
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.revealVote(0, true, 0x8e0b79052a49a89943887bc0fbc72882);
+    vm.stopPrank();
+
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.revealVote(0, false, 0x512da4641020358f91de50b68983ce05);
+    vm.stopPrank();
+
+    // Verify the votes are revealed correctly
+    assertTrue(peerReview.submissions(0).votes(0x90F79bf6EB2c4f870365E785982E1f101E93b906), "Reviewer 1's vote should be true.");
+    assertTrue(peerReview.submissions(0).votes(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc), "Reviewer 3's vote should be true.");
+    assertFalse(peerReview.submissions(0).votes(0x976EA74026E726554dB657fA54763abd0C3a0aa9), "Reviewer 4's vote should be false.");
+  }
+
   /// @dev Test for verifying the number of authors and reviewers.
   function testConstructorInitialization() public {
     // Verify the correct number of authors
