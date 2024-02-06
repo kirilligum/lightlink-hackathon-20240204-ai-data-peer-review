@@ -1,11 +1,23 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.9;
 
-contract PeerReview {
+import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequesterV0.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+// contract PeerReview {
+contract PeerReview is RrpRequesterV0, Ownable {
   // Event declaration
+  event RequestedUint256(bytes32 indexed requestId);
+  event ReceivedUint256(bytes32 indexed requestId, uint256 response);
+  event WithdrawalRequested(address indexed airnode, address indexed sponsorWallet);
+
   event SubmissionCreated(uint256 submissionId);
 
-  constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
+  constructor(
+    address[] memory _authors,
+    address[] memory _reviewerAddresses,
+    address _airnodeRrp
+  ) RrpRequesterV0(_airnodeRrp) {
     authors = _authors;
     for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
       reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
@@ -38,6 +50,11 @@ contract PeerReview {
   Submission[] public submissions;
   string public constant LICENSE = "CC BY-NC-SA";
   uint256 public constant ROI_FEE_DENOMINATOR = 100;
+  address public airnode; /// The address of the QRNG Airnode
+  bytes32 public endpointIdUint256; /// The endpoint ID for requesting a single random number
+  address public sponsorWallet; /// The wallet that will cover the gas costs of the request
+
+  mapping(bytes32 => bool) public expectingRequestWithIdToBeFulfilled;
 
   // Updated function for reviewers to add their keywords
   function addKeywords(string[] memory _keywords) public {
@@ -67,6 +84,62 @@ contract PeerReview {
   function assignSeed(uint256 submissionId, uint256 _seed) public {
     require(submissionId < submissions.length, "Invalid submission ID");
     submissions[submissionId].seed = _seed;
+  }
+
+  /// @notice Sets the parameters for making requests
+  function setRequestParameters(
+    address _airnode,
+    bytes32 _endpointIdUint256,
+    // bytes32 _endpointIdUint256Array,
+    address _sponsorWallet
+  ) external {
+    airnode = _airnode;
+    endpointIdUint256 = _endpointIdUint256;
+    sponsorWallet = _sponsorWallet;
+  }
+
+  /// @notice To receive funds from the sponsor wallet and send them to the owner.
+  receive() external payable {
+    payable(owner()).transfer(msg.value);
+    emit WithdrawalRequested(airnode, sponsorWallet);
+  }
+
+  /// @notice Requests a `uint256`
+  /// @dev This request will be fulfilled by the contract's sponsor wallet,
+  /// which means spamming it may drain the sponsor wallet.
+  function makeRequestUint256() external {
+    bytes32 requestId = airnodeRrp.makeFullRequest(
+      airnode,
+      endpointIdUint256,
+      address(this),
+      sponsorWallet,
+      address(this),
+      this.fulfillUint256.selector,
+      ""
+    );
+    expectingRequestWithIdToBeFulfilled[requestId] = true;
+    emit RequestedUint256(requestId);
+  }
+
+  /// @notice Called by the Airnode through the AirnodeRrp contract to
+  /// fulfill the request
+  /// Function to assign a seed to a submission
+  function fulfillUint256(
+    uint256 submissionId,
+    bytes32 requestId,
+    bytes calldata data
+  )
+    external
+    // ) external {
+    onlyAirnodeRrp
+  {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    require(expectingRequestWithIdToBeFulfilled[requestId], "Request ID not known");
+    expectingRequestWithIdToBeFulfilled[requestId] = false;
+    uint256 qrngUint256 = abi.decode(data, (uint256));
+    // Do what you want with `qrngUint256` here...
+    submissions[submissionId].seed = qrngUint256;
+    emit ReceivedUint256(requestId, qrngUint256);
   }
 
   // Find top 3 matching reviewers for a submission

@@ -7,7 +7,9 @@
     "url": "https://github.com/PaulRBerg"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.1"
+    "@api3/airnode-admin": "^0.13.0",
+    "@openzeppelin/contracts": "^4.9.3",
+    "ethers": "^6.9.0"
   },
   "devDependencies": {
     "@prb/test": "^0.6.4",

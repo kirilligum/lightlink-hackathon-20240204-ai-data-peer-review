@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.23 <0.9.0;
+pragma solidity >=0.8.9 <0.9.0;
 
 import { PRBTest } from "@prb/test/src/PRBTest.sol";
 import { console2 } from "forge-std/src/console2.sol";
 import { StdCheats } from "forge-std/src/StdCheats.sol";
+import { AirnodeRrpV0 } from "@api3/airnode-protocol/contracts/rrp/AirnodeRrpV0.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { PeerReview } from "../src/PeerReview.sol";
 
@@ -11,9 +13,17 @@ import { PeerReview } from "../src/PeerReview.sol";
 /// https://book.getfoundry.sh/forge/writing-tests
 contract PeerReviewTest is PRBTest, StdCheats {
   PeerReview internal peerReview;
+  uint256 fork1;
+  AirnodeRrpV0 airnodeRrp;
 
   /// @dev A function invoked before each test case is run.
   function setUp() public virtual {
+    fork1 = vm.createFork("https://rpc.ankr.com/eth_goerli");
+    vm.selectFork(fork1);
+    // We must mimic an Airnode to call back to our QRNG contract
+    // So we deploy an airnodeRrp contract
+    airnodeRrp = new AirnodeRrpV0();
+    vm.startPrank(msg.sender);
     // Instantiate the contract-under-test.
     address[] memory authors = new address[](2);
     authors[0] = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8; // Anvil's local test account 1
@@ -25,7 +35,8 @@ contract PeerReviewTest is PRBTest, StdCheats {
     reviewers[2] = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc; // Anvil's local test account 5
     reviewers[3] = 0x976EA74026E726554dB657fA54763abd0C3a0aa9; // Anvil's local test account 6
 
-    peerReview = new PeerReview(authors, reviewers);
+    peerReview = new PeerReview(authors, reviewers, address(airnodeRrp));
+    vm.stopPrank();
 
     // Simulate reviewer 1 adding keywords
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906); // Simulate call from reviewer 1's address
