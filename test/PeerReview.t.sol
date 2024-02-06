@@ -58,48 +58,6 @@ contract PeerReviewTest is PRBTest, StdCheats {
     vm.stopPrank();
   }
 
-  /// @dev Test for revealing votes by reviewers
-  function testRevealingVotes() public {
-    // Generate commit hashes for three reviewers using contract functions
-    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
-    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
-    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
-
-    // Simulate reviewers committing their votes
-    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    peerReview.commitVote(0, commitHash1);
-    vm.stopPrank();
-
-    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    peerReview.commitVote(0, commitHash2);
-    vm.stopPrank();
-
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    peerReview.commitVote(0, commitHash3);
-    vm.stopPrank();
-
-    // End voting to allow revealing
-    peerReview.endVoting(0);
-
-    // Simulate reviewers revealing their votes
-    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    peerReview.revealVote(0, true, hex"03301b3328418a6f426a79f8f4519483");
-    vm.stopPrank();
-
-    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    peerReview.revealVote(0, true, hex"8e0b79052a49a89943887bc0fbc72882");
-    vm.stopPrank();
-
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    peerReview.revealVote(0, false, hex"512da4641020358f91de50b68983ce05");
-    vm.stopPrank();
-
-    // Verify the votes are revealed correctly
-    assertTrue(peerReview.getReviewerVote(0, 0x90F79bf6EB2c4f870365E785982E1f101E93b906), "Reviewer 1's vote should be true.");
-    assertTrue(peerReview.getReviewerVote(0, 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc), "Reviewer 3's vote should be true.");
-    assertFalse(peerReview.getReviewerVote(0, 0x976EA74026E726554dB657fA54763abd0C3a0aa9), "Reviewer 4's vote should be false.");
-  }
-
   /// @dev Test for verifying the number of authors and reviewers.
   function testConstructorInitialization() public {
     // Verify the correct number of authors
@@ -221,6 +179,65 @@ contract PeerReviewTest is PRBTest, StdCheats {
       peerReview.getCommitHash(0, 0x976EA74026E726554dB657fA54763abd0C3a0aa9),
       commitHash3,
       "Commit hash for reviewer 4 does not match."
+    );
+  }
+
+  /// @dev Test for revealing votes by reviewers
+  function testRevealingVotes() public {
+    peerReview.findReviewers(0);
+    // Commit votes for three reviewers
+    // bytes32 commitHash1 = 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee;
+    // bytes32 commitHash2 = 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c;
+    // bytes32 commitHash3 = 0x64b00b5dc0d268d37c6bb12818a87e1b0a456a6465bfa8d35b0644edf9fc9007;
+    // Generate commit hashes for three reviewers using contract functions
+    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
+    console2.log("commitHash1:", commitHash1);
+    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
+    console2.log("commitHash1:", commitHash1);
+    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
+    console2.log("commitHash1:", commitHash1);
+
+    // Simulate reviewers committing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.commitVote(0, commitHash1);
+    vm.stopPrank();
+
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.commitVote(0, commitHash2);
+    vm.stopPrank();
+
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.commitVote(0, commitHash3);
+    vm.stopPrank();
+
+    // End voting to allow revealing
+    peerReview.endVoting(0);
+
+    // Simulate reviewers revealing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.revealVote(0, true, hex"03301b3328418a6f426a79f8f4519483");
+    vm.stopPrank();
+
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.revealVote(0, true, hex"8e0b79052a49a89943887bc0fbc72882");
+    vm.stopPrank();
+
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.revealVote(0, false, hex"512da4641020358f91de50b68983ce05");
+    vm.stopPrank();
+
+    // Verify the votes are revealed correctly
+    assertTrue(
+      peerReview.getReviewerVote(0, 0x90F79bf6EB2c4f870365E785982E1f101E93b906),
+      "Reviewer 1's vote should be true."
+    );
+    assertTrue(
+      peerReview.getReviewerVote(0, 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc),
+      "Reviewer 3's vote should be true."
+    );
+    assertFalse(
+      peerReview.getReviewerVote(0, 0x976EA74026E726554dB657fA54763abd0C3a0aa9),
+      "Reviewer 4's vote should be false."
     );
   }
 }
