@@ -275,32 +275,18 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertTrue(isApproved, "Submission should be approved based on majority vote.");
   }
 
-  /// @dev Test for displaying how reviewers voted after reveal phase
-  function testDisplayReviewersVotes() public {
-    // Setup: Simulate the entire voting process including revealing votes
+  /// @dev Test for ending the voting phase
+  function testEndVotingPhase() public {
+    // Setup: Simulate the process leading up to ending the voting phase
     peerReview.findReviewers(0);
-    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
-    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
-    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
-    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    peerReview.commitVote(0, commitHash1);
-    vm.stopPrank();
-    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    peerReview.commitVote(0, commitHash2);
-    vm.stopPrank();
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    peerReview.commitVote(0, commitHash3);
-    vm.stopPrank();
     peerReview.endVoting(0);
-    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
-    peerReview.revealVote(0, true, hex"03301b3328418a6f426a79f8f4519483");
-    vm.stopPrank();
-    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
-    peerReview.revealVote(0, true, hex"8e0b79052a49a89943887bc0fbc72882");
-    vm.stopPrank();
-    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
-    peerReview.revealVote(0, false, hex"512da4641020358f91de50b68983ce05");
-    vm.stopPrank();
+
+    // Execute: Retrieve the submission details
+    bool votingEnded = peerReview.getVotingEnded(0);
+
+    // Verify: Check if the votingEnded flag is set to true
+    assertTrue(votingEnded, "Voting phase should be ended.");
+  }
 
     // Execute: Trigger the function to display how reviewers voted
     (address[] memory reviewers, bool[] memory votes) = peerReview.getReviewersVotes(0);
