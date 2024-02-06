@@ -25,6 +25,7 @@ contract PeerReview {
     mapping(address => bytes32) commits;
     mapping(address => bool) votes;
     address[] selectedReviewers;
+    address[] randomizedReviewers; // New field to store randomized reviewers
     bool votingEnded;
     bool revealPhase;
     uint256 revealCount;
@@ -106,6 +107,7 @@ contract PeerReview {
     }
 
     submission.selectedReviewers = topReviewers;
+    shuffleReviewers(submissionId); // Shuffle reviewers based on the seed
   }
 
   // A simple function to check if a string contains a substring
@@ -292,3 +294,14 @@ contract PeerReview {
     revert("Reviewer not found.");
   }
 }
+  // Function to shuffle reviewers based on the submission's seed
+  function shuffleReviewers(uint256 submissionId) internal {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    uint256 seed = submission.seed;
+    for (uint256 i = 0; i < submission.selectedReviewers.length; i++) {
+      uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
+      (submission.selectedReviewers[i], submission.selectedReviewers[j]) = (submission.selectedReviewers[j], submission.selectedReviewers[i]);
+    }
+    submission.randomizedReviewers = submission.selectedReviewers;
+  }
