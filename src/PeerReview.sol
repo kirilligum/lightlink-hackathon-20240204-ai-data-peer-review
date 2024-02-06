@@ -225,6 +225,13 @@ contract PeerReview {
     submission.isApproved = approveCount > submission.selectedReviewers.length / 2;
   }
 
+  // Function to get the commit hash for a specific submission and reviewer
+  function getCommitHash(uint256 submissionId, address reviewer) public view returns (bytes32) {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    return submission.commits[reviewer];
+  }
+
   // Function to get the vote of a specific reviewer for a given submission
   function getReviewerVote(uint256 submissionId, address reviewer) public view returns (bool) {
     require(submissionId < submissions.length, "Invalid submission ID");
