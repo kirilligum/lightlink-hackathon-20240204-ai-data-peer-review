@@ -265,7 +265,7 @@ contract PeerReview {
     return keccak256(abi.encodePacked(false, salt));
   }
 
-    // Function to get the number of reviewers
+  // Function to get the number of reviewers
   function getReviewersCount() public view returns (uint256) {
     return reviewers.length;
   }
