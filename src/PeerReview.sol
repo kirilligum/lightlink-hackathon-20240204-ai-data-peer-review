@@ -25,7 +25,7 @@ contract PeerReview {
     mapping(address => bytes32) commits;
     mapping(address => bool) votes;
     address[] selectedReviewers;
-    address[] randomizedReviewers; // New field to store randomized reviewers
+    address[] shuffledReviewers; // Updated field to store shuffled reviewers
     bool votingEnded;
     bool revealPhase;
     uint256 revealCount;
@@ -71,7 +71,8 @@ contract PeerReview {
 
   // Find top 3 matching reviewers for a submission
   function findReviewers(uint256 submissionId) public {
-    shuffleReviewers(submissionId); // Shuffle the original reviewers array based on the submission's seed
+    // The shuffleReviewers call is updated to shuffle and store reviewers in the Submission struct
+    shuffleReviewers(submissionId); // This call now populates the shuffledReviewers field in the Submission struct
     require(submissionId < submissions.length, "Invalid submission ID");
     Submission storage submission = submissions[submissionId];
 
@@ -295,13 +296,18 @@ contract PeerReview {
     revert("Reviewer not found.");
   }
 }
-  // Function to shuffle the original reviewers array based on the submission's seed
+  // Updated function to shuffle a copy of the reviewers and store it in the Submission struct
   function shuffleReviewers(uint256 submissionId) internal {
     require(submissionId < submissions.length, "Invalid submission ID");
     Submission storage submission = submissions[submissionId];
-    uint256 seed = submission.seed;
+    address[] memory shuffledReviewers = new address[](reviewers.length);
     for (uint256 i = 0; i < reviewers.length; i++) {
-      uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
-      (reviewers[i], reviewers[j]) = (reviewers[j], reviewers[i]);
+      shuffledReviewers[i] = reviewers[i].addr;
     }
+    uint256 seed = submission.seed;
+    for (uint256 i = 0; i < shuffledReviewers.length; i++) {
+      uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
+      (shuffledReviewers[i], shuffledReviewers[j]) = (shuffledReviewers[j], shuffledReviewers[i]);
+    }
+    submission.shuffledReviewers = shuffledReviewers;
   }
