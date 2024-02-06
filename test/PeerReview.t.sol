@@ -133,8 +133,10 @@ contract PeerReviewTest is PRBTest, StdCheats {
   }
 
   function testFindingSuitableReviewers() public {
+    // Assign a seed to the submission before finding reviewers
+    uint256 seed = 9938158688784456170876542658114065742897213138659494805615283452600225340487;
+    peerReview.assignSeed(0, seed);
     // Trigger the function to find suitable reviewers for the submission
-    // peerReview.findReviewers(submissionId);
     peerReview.findReviewers(0);
     // Verify the top 3 reviewers are selected based on the highest keyword matches
     address[] memory selectedReviewers = peerReview.getSelectedReviewers(0);
