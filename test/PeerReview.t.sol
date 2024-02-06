@@ -60,10 +60,10 @@ contract PeerReviewTest is PRBTest, StdCheats {
 
   /// @dev Test for revealing votes by reviewers
   function testRevealingVotes() public {
-    // Commit votes for three reviewers
-    bytes32 commitHash1 = 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee;
-    bytes32 commitHash2 = 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c;
-    bytes32 commitHash3 = 0xd3b8e57201f503553e68903eabd106060dd2e648c44f5c1b087cc45cebb1fbf7;
+    // Generate commit hashes for three reviewers using contract functions
+    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
+    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
+    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
 
     // Simulate reviewers committing their votes
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
