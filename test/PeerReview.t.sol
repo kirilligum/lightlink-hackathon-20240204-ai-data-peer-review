@@ -186,17 +186,16 @@ contract PeerReviewTest is PRBTest, StdCheats {
   function testRevealingVotes() public {
     peerReview.findReviewers(0);
     // Commit votes for three reviewers
-    // bytes32 commitHash1 = 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee;
-    // bytes32 commitHash2 = 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c;
-    // bytes32 commitHash3 = 0x64b00b5dc0d268d37c6bb12818a87e1b0a456a6465bfa8d35b0644edf9fc9007;
+    bytes32 commitHash1 = 0xf28366e0dbd0c64476456ac244996f1d2640c8a0defe2a9ce4e1cbaf924f59c2;
+    bytes32 commitHash2 = 0x347ed0f6288121108312caab7abe03d320b0b4ce2deda7db105d0038d908047b;
+    bytes32 commitHash3 = 0x0cb80e70de7643e58cd613588d81d94145aadcd6e2ffb4244099f4a4292bf2d8;
     // Generate commit hashes for three reviewers using contract functions
-    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
-    console2.logBytes32(commitHash1);
-    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
-    console2.logBytes32(commitHash2);
-    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
-    console2.logBytes32(commitHash3);
-
+    // bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
+    // console2.logBytes32(commitHash1);
+    // bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
+    // console2.logBytes32(commitHash2);
+    // bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
+    // console2.logBytes32(commitHash3
     // Simulate reviewers committing their votes
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
     peerReview.commitVote(0, commitHash1);
