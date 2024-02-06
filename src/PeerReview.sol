@@ -288,7 +288,17 @@ contract PeerReview {
     return resizedApprovedReviewers;
   }
 
-  // Function to get the number of reviewers
+  // Function to create a commit hash for a true vote
+  function createCommitHashTrue(bytes32 salt) public pure returns (bytes32) {
+    return keccak256(abi.encodePacked(true, salt));
+  }
+
+  // Function to create a commit hash for a false vote
+  function createCommitHashFalse(bytes32 salt) public pure returns (bytes32) {
+    return keccak256(abi.encodePacked(false, salt));
+  }
+
+    // Function to get the number of reviewers
   function getReviewersCount() public view returns (uint256) {
     return reviewers.length;
   }
