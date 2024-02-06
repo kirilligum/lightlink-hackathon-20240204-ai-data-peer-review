@@ -274,7 +274,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
     bool isApproved = peerReview.isApproved(0);
     assertTrue(isApproved, "Submission should be approved based on majority vote.");
   }
-}
+
   /// @dev Test for displaying how reviewers voted after reveal phase
   function testDisplayReviewersVotes() public {
     // Setup: Simulate the entire voting process including revealing votes
@@ -311,3 +311,4 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertTrue(votes[1], "Reviewer 3's vote should be true.");
     assertFalse(votes[2], "Reviewer 4's vote should be false.");
   }
+}
