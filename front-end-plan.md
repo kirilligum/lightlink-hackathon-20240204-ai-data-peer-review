@@ -1,1 +1,27 @@
-# front end plan
+# Front End Layout Schema (Single Page)
+
+- **Text**: "Welcome to the Peer Review Platform"
+- **Form**: Login/Signup
+  - Email Address (Input field)
+  - Password (Input field)
+  - Button: "Login/Signup"
+- **Text**: "Submit Your Data Object"
+- **Form**: Data Submission
+  - Question (Input field)
+  - Response (Textarea)
+  - Metadata (Textarea, optional)
+  - Button: "Submit"
+- **Text**: "Update Your Keywords"
+- **Form**: Keywords Update
+  - Keywords (Textarea)
+  - Button: "Update"
+- **Text**: "Review Assignments"
+  - List of Assignments
+    - Text: Question
+    - Text: Response
+    - Form: Review
+      - Vote (Radio buttons: Accept, Reject)
+      - Comment (Textarea, optional)
+      - Button: "Submit Review"
+- **Text**: "Your Submissions"
+  - List of Submissions with Status (Pending, Approved, Rejected)
