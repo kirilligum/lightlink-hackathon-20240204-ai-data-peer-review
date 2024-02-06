@@ -29,6 +29,7 @@ contract PeerReview {
     bool revealPhase;
     uint256 revealCount;
     bool isApproved;
+    uint256 seed; // New field to store seed
   }
 
   address[] public authors;
@@ -59,6 +60,12 @@ contract PeerReview {
     uint256 submissionId = submissions.length - 1;
     emit SubmissionCreated(submissionId);
     return submissionId;
+  }
+
+  // Function to assign a seed to a submission
+  function assignSeed(uint256 submissionId, uint256 _seed) public {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    submissions[submissionId].seed = _seed;
   }
 
   // Find top 3 matching reviewers for a submission
