@@ -13,17 +13,6 @@ contract PeerReview is RrpRequesterV0, Ownable {
 
   event SubmissionCreated(uint256 submissionId);
 
-  constructor(
-    address[] memory _authors,
-    address[] memory _reviewerAddresses,
-    address _airnodeRrp
-  ) RrpRequesterV0(_airnodeRrp) {
-    authors = _authors;
-    for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
-      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
-    }
-  }
-
   struct Reviewer {
     address addr;
     string[] keywords;
@@ -55,6 +44,17 @@ contract PeerReview is RrpRequesterV0, Ownable {
   address public sponsorWallet; /// The wallet that will cover the gas costs of the request
 
   mapping(bytes32 => bool) public expectingRequestWithIdToBeFulfilled;
+
+  constructor(
+    address[] memory _authors,
+    address[] memory _reviewerAddresses,
+    address _airnodeRrp
+  ) RrpRequesterV0(_airnodeRrp) {
+    authors = _authors;
+    for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
+      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
+    }
+  }
 
   // Updated function for reviewers to add their keywords
   function addKeywords(string[] memory _keywords) public {

@@ -60,3 +60,47 @@ uint256 3 random numbers:
 9938158688784456170876542658114065742897213138659494805615283452600225340487
 77950231225348020492739384941811307932445445081581953409049429207446873430880
 7246091755568084830341137196636345701272218506903477916873633839897391221053
+
+constructor:
+["0x103D579Aacc55AcA00847E2f72ce1B120C90a59D", "0x0D793cfF7d8E30d50a989D7b574c21A42269C78b"]
+["0xe9aAd3077d1b506Ba35BD67802E572973A6a15FE", "0xBC697DbEcFDdbC27eDee93D2B76A344c8eBd468b", "0x0791722051B9d4fc60fee61651aE4972D5bA0D4D", "0x1Ad2929c25DdEC32ed430EA2600fa043d7945C30"]
+0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd
+
+addKeywords:
+keywordsReviewer1
+["gasless","blockchain"]
+keywordsReviewer2
+keywordsReviewer3
+["transactions"]
+keywordsReviewer4
+["fees"]
+
+Author (gen test 1 account) submits data:
+"why do we need gasless transactions?"
+"We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns."
+
+
+setRequestParameters: (as main account. not author or reviewer)
+_airnode
+0x6238772544f029ecaBfDED4300f13A3c4FE84E1D
+_endpointIdUint256
+0x94555f83f1addda23fdaa7c74f27ce2b764ed5cc430c66f5ff1bcf39d583da36
+_sponsorWallet
+0xC2cc33c0FD81330aA20D3ce839BF062d5Fd428be
+
+kirill@zagadka ~/p/lightlink-hackathon-20240204-ai-data-peer-review (v11qrng)> npx @api3/airnode-admin derive-sponsor-wallet-address \
+                                                                                     --airnode-address 0x6238772544f029ecaBfDED4300f13A3c4FE84E1D \
+                                                                                     --airnode-xpub xpub6CuDdF9zdWTRuGybJPuZUGnU4suZowMmgu15bjFZT2o6PUtk4Lo78KGJUGBobz3pPKRaN9sLxzj21CMe6StP3zUsd8tWEJPgZBesYBMY7Wo \
+                                                                                     --sponsor-address 0x573d1A911A4355bDd26e cFFc0E24E27a5105c121
+                                                                                     the last contract 0x57 is the address of the PeerReview contract
+Sponsor wallet address: 0x28192e2E2Eef90f9EcC2bbCe80d2310b3D5c907A
+
+send 0.1 to 0x28192e2E2Eef90f9EcC2bbCe80d2310b3D5c907A
+
+
+makeRequestUint256()
+
+assignQrndSeed
+
+>> seed appears when reading submissions[0]
+
