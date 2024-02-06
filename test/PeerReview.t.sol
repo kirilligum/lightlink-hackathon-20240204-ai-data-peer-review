@@ -124,7 +124,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
       memory response = "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.";
     uint256 submissionId = 0;
     // uint256 submissionId = peerReview.submitData(question, response);
-    (address author, string memory storedQuestion, string memory storedResponse, , , , , ) = peerReview.submissions(
+    (address author, string memory storedQuestion, string memory storedResponse, , , , , , ) = peerReview.submissions(
       submissionId
     );
     assertEq(author, 0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
@@ -324,6 +324,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
     assertTrue(votes[1], "Reviewer 3's vote should be true.");
     assertFalse(votes[2], "Reviewer 4's vote should be false.");
   }
+
   /// @dev Test for assigning and verifying the seed in a submission
   function testAssigningAndVerifyingSeed() public {
     // Assign a seed to the first submission
@@ -331,7 +332,7 @@ contract PeerReviewTest is PRBTest, StdCheats {
     peerReview.assignSeed(0, seed);
 
     // Retrieve the submission to verify the seed is correctly assigned
-    (, , , , , , , , , , uint256 storedSeed) = peerReview.submissions(0);
+    (, , , , , , , , uint256 storedSeed) = peerReview.submissions(0);
     assertEq(storedSeed, seed, "The stored seed does not match the assigned seed.");
   }
 }
