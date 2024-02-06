@@ -242,13 +242,35 @@ contract PeerReviewTest is PRBTest, StdCheats {
 
   /// @dev Test for approval determination after revealing votes
   function testApprovalDetermination() public {
-    // Assuming the setup and vote revealing has been done as in testRevealingVotes()
-    peerReview.endVoting(0); // Ensure voting has ended to simulate the environment for approval determination
-
-    // Trigger the determination of approval based on votes
-    // This step might be automatically handled by the contract after the last vote is revealed
-    // If not, you might need to call a specific function to evaluate the votes and determine approval
-
+    // Simulate the entire process leading up to the end of voting
+    peerReview.findReviewers(0);
+    // Commit votes for three reviewers
+    bytes32 commitHash1 = 0xf28366e0dbd0c64476456ac244996f1d2640c8a0defe2a9ce4e1cbaf924f59c2;
+    bytes32 commitHash2 = 0x347ed0f6288121108312caab7abe03d320b0b4ce2deda7db105d0038d908047b;
+    bytes32 commitHash3 = 0x0cb80e70de7643e58cd613588d81d94145aadcd6e2ffb4244099f4a4292bf2d8;
+    // Simulate reviewers committing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.commitVote(0, commitHash1);
+    vm.stopPrank();
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.commitVote(0, commitHash2);
+    vm.stopPrank();
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.commitVote(0, commitHash3);
+    vm.stopPrank();
+    // End voting to allow revealing
+    peerReview.endVoting(0);
+    // Simulate reviewers revealing their votes
+    vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
+    peerReview.revealVote(0, true, hex"03301b3328418a6f426a79f8f4519483");
+    vm.stopPrank();
+    vm.startPrank(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc);
+    peerReview.revealVote(0, true, hex"8e0b79052a49a89943887bc0fbc72882");
+    vm.stopPrank();
+    vm.startPrank(0x976EA74026E726554dB657fA54763abd0C3a0aa9);
+    peerReview.revealVote(0, false, hex"512da4641020358f91de50b68983ce05");
+    vm.stopPrank();
+    // Ensure voting has ended to simulate the environment for approval determination
     bool isApproved = peerReview.isApproved(0);
     assertTrue(isApproved, "Submission should be approved based on majority vote.");
   }
