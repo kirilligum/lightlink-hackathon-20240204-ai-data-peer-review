@@ -225,6 +225,14 @@ contract PeerReview {
     submission.isApproved = approveCount > submission.selectedReviewers.length / 2;
   }
 
+  // Function to get the vote of a specific reviewer for a given submission
+  function getReviewerVote(uint256 submissionId, address reviewer) public view returns (bool) {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    require(submission.revealPhase, "Reveal phase not completed");
+    return submission.votes[reviewer];
+  }
+
   // Function to display how reviewers voted after reveal phase
   function getReviewersVotes(uint256 submissionId) public view returns (address[] memory, bool[] memory) {
     require(submissionId < submissions.length, "Invalid submission ID");
