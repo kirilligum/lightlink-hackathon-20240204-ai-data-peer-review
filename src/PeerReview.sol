@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 contract PeerReview {
   // Event declaration
   event SubmissionCreated(uint256 submissionId);
-  // Event to emit the score of a reviewer
-  event ScoreUpdated(address reviewer, uint256 score);
 
   constructor(address[] memory _authors, address[] memory _reviewerAddresses) {
     authors = _authors;
@@ -17,7 +15,6 @@ contract PeerReview {
   struct Reviewer {
     address addr;
     string[] keywords;
-    uint256 score; // Added score field to keep track of each reviewer's score
   }
 
   struct Submission {
@@ -74,19 +71,15 @@ contract PeerReview {
 
     uint256[] memory scores = new uint256[](reviewers.length);
     for (uint256 i = 0; i < reviewers.length; i++) {
-      // reviewers[i].score = 0; // Reset score for each reviewer at the start
       for (uint256 j = 0; j < reviewers[i].keywords.length; j++) {
         if (
           contains(submission.question, reviewers[i].keywords[j]) ||
           contains(submission.response, reviewers[i].keywords[j])
         ) {
-          // reviewers[i].score++;
           scores[i]++;
-          emit ScoreUpdated(reviewers[i].addr, reviewers[i].score);
         }
       }
 
-      // if (reviewers[i].score >= topReviewersValue[0]) {
       if (scores[i] >= topReviewersValue[0]) {
         topReviewersValue[2] = topReviewersValue[1];
         topReviewersValue[1] = topReviewersValue[0];
@@ -278,16 +271,6 @@ contract PeerReview {
     }
 
     return resizedApprovedReviewers;
-  }
-
-  // Function to get the score of a specific reviewer
-  function getReviewerScore(address reviewerAddress) public view returns (uint256) {
-    for (uint256 i = 0; i < reviewers.length; i++) {
-      if (reviewers[i].addr == reviewerAddress) {
-        return reviewers[i].score;
-      }
-    }
-    revert("Reviewer not found.");
   }
 
   // Function to get the number of reviewers
