@@ -95,9 +95,9 @@ contract PeerReviewTest is PRBTest, StdCheats {
     vm.stopPrank();
 
     // Verify the votes are revealed correctly
-    assertTrue(peerReview.submissions(0).votes(0x90F79bf6EB2c4f870365E785982E1f101E93b906), "Reviewer 1's vote should be true.");
-    assertTrue(peerReview.submissions(0).votes(0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc), "Reviewer 3's vote should be true.");
-    assertFalse(peerReview.submissions(0).votes(0x976EA74026E726554dB657fA54763abd0C3a0aa9), "Reviewer 4's vote should be false.");
+    assertTrue(peerReview.getReviewerVote(0, 0x90F79bf6EB2c4f870365E785982E1f101E93b906), "Reviewer 1's vote should be true.");
+    assertTrue(peerReview.getReviewerVote(0, 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc), "Reviewer 3's vote should be true.");
+    assertFalse(peerReview.getReviewerVote(0, 0x976EA74026E726554dB657fA54763abd0C3a0aa9), "Reviewer 4's vote should be false.");
   }
 
   /// @dev Test for verifying the number of authors and reviewers.
