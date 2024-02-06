@@ -1,0 +1,55 @@
+Available Accounts
+==================
+
+(0) 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 (10000.000000000000000000 ETH)
+(1) 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 (10000.000000000000000000 ETH)
+(2) 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC (10000.000000000000000000 ETH)
+(3) 0x90F79bf6EB2c4f870365E785982E1f101E93b906 (10000.000000000000000000 ETH)
+(4) 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65 (10000.000000000000000000 ETH)
+(5) 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc (10000.000000000000000000 ETH)
+(6) 0x976EA74026E726554dB657fA54763abd0C3a0aa9 (10000.000000000000000000 ETH)
+(7) 0x14dC79964da2C08b23698B3D3cc7Ca32193d9955 (10000.000000000000000000 ETH)
+(8) 0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f (10000.000000000000000000 ETH)
+(9) 0xa0Ee7A142d267C1f36714E4a8F75612F20a79720 (10000.000000000000000000 ETH)
+
+data:
+why do we need gasless transactions?
+We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns.
+
+reviewers' keywords:
+["gassless","blockchain"]
+[]
+["transactions"]
+["fees"]
+
+
+Example 1:
+Vote: true
+Commit Hash: 0xc84fd4e93dad9c9112c18633717eecf901df6fd6adf86985627dc9ec33b0a2ee
+Salt: 0x03301b3328418a6f426a79f8f4519483
+--------------------
+Example 2:
+Vote: true
+Commit Hash: 0x9a1658b75a569dfcb7d3157a02a6d66b61acbb11fb8faa85611ffda088fa730c
+Salt: 0x8e0b79052a49a89943887bc0fbc72882
+--------------------
+Example 3:
+Vote: true
+Commit Hash: 0xd3b8e57201f503553e68903eabd106060dd2e648c44f5c1b087cc45cebb1fbf7
+Salt: 0x0cc96a982f2e884d80337bf17517ebe2
+--------------------
+Example 4:
+Vote: false
+Commit Hash: 0x64b00b5dc0d268d37c6bb12818a87e1b0a456a6465bfa8d35b0644edf9fc9007
+Salt: 0x512da4641020358f91de50b68983ce05
+--------------------
+Example 5:
+Vote: false
+Commit Hash: 0xb24e8519eb51609a4329a74afccc9cec00fecac9299421bc51c6fe6447ea587c
+Salt: 0xf0c8334e93fff04a395fc54669ff5683
+--------------------
+Example 6:
+Vote: false
+Commit Hash: 0x0e4fba88e4579ebd07ce8939f0b654f6c0d7049692b3e67455d97c3a9b86dd8d
+Salt: 0xeea1135ec2901e5a66232834aa3e0276
+--------------------

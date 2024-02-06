@@ -1,0 +1,10 @@
+A Solidity smart contract that performs the following functions:
+
+During construction, it sets the addresses of authors and reviewers, establishes the license, and sets the ROI_FEE_DENOMINATOR.
+The reviewers are required to add a list of keywords in which they are experts.
+An author posts a data object containing a question, a response, and any necessary metadata.
+The author executes a function within the contract to find suitable reviewers.
+The 'find_reviewers' function determines how many of a reviewer's keywords are mentioned in the author's question and response. It then selects the three reviewers with the highest number of keyword mentions and assigns them to review the data object.
+These reviewers must then vote to accept or reject the data object using a commit-reveal blind voting scheme. The majority vote determines the correct answer.
+After all votes are revealed, the submission is marked as approved or not approved based on the majority vote.
+A function is created to display how the reviewers voted (post-reveal).
