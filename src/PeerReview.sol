@@ -2,7 +2,7 @@
 pragma solidity 0.8.9;
 
 import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequesterV0.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts@4.9.5/access/Ownable.sol";
 
 // contract PeerReview {
 contract PeerReview is RrpRequesterV0, Ownable {
@@ -12,6 +12,17 @@ contract PeerReview is RrpRequesterV0, Ownable {
   event WithdrawalRequested(address indexed airnode, address indexed sponsorWallet);
 
   event SubmissionCreated(uint256 submissionId);
+
+  constructor(
+    address[] memory _authors,
+    address[] memory _reviewerAddresses,
+    address _airnodeRrp
+  ) RrpRequesterV0(_airnodeRrp) {
+    authors = _authors;
+    for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
+      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
+    }
+  }
 
   struct Reviewer {
     address addr;
@@ -42,19 +53,9 @@ contract PeerReview is RrpRequesterV0, Ownable {
   address public airnode; /// The address of the QRNG Airnode
   bytes32 public endpointIdUint256; /// The endpoint ID for requesting a single random number
   address public sponsorWallet; /// The wallet that will cover the gas costs of the request
+  uint256 public _qrngUint256; /// The random number returned by the QRNG Airnode
 
   mapping(bytes32 => bool) public expectingRequestWithIdToBeFulfilled;
-
-  constructor(
-    address[] memory _authors,
-    address[] memory _reviewerAddresses,
-    address _airnodeRrp
-  ) RrpRequesterV0(_airnodeRrp) {
-    authors = _authors;
-    for (uint256 i = 0; i < _reviewerAddresses.length; i++) {
-      reviewers.push(Reviewer(_reviewerAddresses[i], new string[](0)));
-    }
-  }
 
   // Updated function for reviewers to add their keywords
   function addKeywords(string[] memory _keywords) public {
@@ -78,12 +79,6 @@ contract PeerReview is RrpRequesterV0, Ownable {
     uint256 submissionId = submissions.length - 1;
     emit SubmissionCreated(submissionId);
     return submissionId;
-  }
-
-  // Function to assign a seed to a submission
-  function assignSeed(uint256 submissionId, uint256 _seed) public {
-    require(submissionId < submissions.length, "Invalid submission ID");
-    submissions[submissionId].seed = _seed;
   }
 
   /// @notice Sets the parameters for making requests
@@ -124,22 +119,25 @@ contract PeerReview is RrpRequesterV0, Ownable {
   /// @notice Called by the Airnode through the AirnodeRrp contract to
   /// fulfill the request
   /// Function to assign a seed to a submission
-  function fulfillUint256(
-    uint256 submissionId,
-    bytes32 requestId,
-    bytes calldata data
-  )
-    external
-    // ) external {
-    onlyAirnodeRrp
-  {
-    require(submissionId < submissions.length, "Invalid submission ID");
+  function fulfillUint256(bytes32 requestId, bytes calldata data) external onlyAirnodeRrp {
     require(expectingRequestWithIdToBeFulfilled[requestId], "Request ID not known");
     expectingRequestWithIdToBeFulfilled[requestId] = false;
     uint256 qrngUint256 = abi.decode(data, (uint256));
+    _qrngUint256 = qrngUint256;
     // Do what you want with `qrngUint256` here...
-    submissions[submissionId].seed = qrngUint256;
     emit ReceivedUint256(requestId, qrngUint256);
+  }
+
+  // Function to assign a seed to a submission
+  function assignQrndSeed(uint256 submissionId) public {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    submissions[submissionId].seed = _qrngUint256;
+  }
+
+  // Function to assign a seed to a submission
+  function assignSeed(uint256 submissionId, uint256 _seed) public {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    submissions[submissionId].seed = _seed;
   }
 
   // Find top 3 matching reviewers for a submission
