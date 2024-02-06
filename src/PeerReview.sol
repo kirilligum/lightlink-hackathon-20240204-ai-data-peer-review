@@ -184,6 +184,22 @@ contract PeerReview {
     return submission.votes[reviewer];
   }
 
+  // Function to check if a submission is approved based on majority vote
+  function isApproved(uint256 submissionId) public view returns (bool) {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    require(submission.revealPhase, "Reveal phase not completed");
+
+    uint256 approveCount = 0;
+    for (uint256 i = 0; i < submission.selectedReviewers.length; i++) {
+      if (submission.votes[submission.selectedReviewers[i]]) {
+        approveCount++;
+      }
+    }
+
+    return approveCount > submission.selectedReviewers.length / 2;
+  }
+
   // Function to display how reviewers voted after reveal phase
   function getReviewersVotes(uint256 submissionId) public view returns (address[] memory, bool[] memory) {
     require(submissionId < submissions.length, "Invalid submission ID");
