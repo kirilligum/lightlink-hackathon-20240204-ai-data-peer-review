@@ -1,5 +1,20 @@
 # AI data peer review
+
 lightlink hackathon 20240204
+
+
+High-quality data is the biggest driver and competitive advantage in AI. Inspired by peer-reviewed scientific publishing, I have built a Web3 peer-review system for creating high-quality datasets that focus on teaching AI how to think. Here is how it works:
+1. Authors and reviewers are specified during the creation of the contract.
+2. Reviewers specify their areas of expertise.
+3. An author submits a data object comprising instructions and a response.
+4. The contract shuffles the order of reviewers using a quantum random number generator, compares reviewers' preferences with the data object, and selects the best reviewers for that particular data object based on keyword appearance frequency.
+5. Reviewers examine the data object and, in a blind vote (commit-reveal scheme), decide if the data object is of high enough quality to be accepted.
+All the data is on-chain, creating transparency for AI and a way for authors and reviewers to be compensated and to grow their reputation in an open manner. The contract has undergone extensive testing.
+
+
+
+
+
 
 ## Description
 
