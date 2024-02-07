@@ -190,6 +190,22 @@ contract PeerReview is RrpRequesterV0, Ownable {
     submission.selectedReviewers = topReviewers;
   }
 
+  // Updated function to shuffle a copy of the reviewers and store it in the Submission struct
+  function shuffleReviewers(uint256 submissionId) internal {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    address[] memory shuffledReviewers = new address[](reviewers.length);
+    for (uint256 i = 0; i < reviewers.length; i++) {
+      shuffledReviewers[i] = reviewers[i].addr;
+    }
+    uint256 seed = submission.seed;
+    for (uint256 i = 0; i < shuffledReviewers.length; i++) {
+      uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
+      (shuffledReviewers[i], shuffledReviewers[j]) = (shuffledReviewers[j], shuffledReviewers[i]);
+    }
+    submission.shuffledReviewers = shuffledReviewers;
+  }
+
   // A simple function to check if a string contains a substring
   function contains(string memory _string, string memory _substring) public pure returns (bool) {
     bytes memory stringBytes = bytes(_string);
@@ -222,6 +238,20 @@ contract PeerReview is RrpRequesterV0, Ownable {
     require(!submission.votingEnded, "Voting has ended");
 
     submission.commits[msg.sender] = commitHash;
+  }
+
+  // End the voting phase
+  function endVoting(uint256 submissionId) public {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    submission.votingEnded = true;
+  }
+
+  // Function to check if the voting phase has ended for a submission
+  function getVotingEnded(uint256 submissionId) public view returns (bool) {
+    require(submissionId < submissions.length, "Invalid submission ID");
+    Submission storage submission = submissions[submissionId];
+    return submission.votingEnded;
   }
 
   // Reveal a vote
@@ -305,20 +335,6 @@ contract PeerReview is RrpRequesterV0, Ownable {
     return (selectedReviewers, votes);
   }
 
-  // End the voting phase
-  function endVoting(uint256 submissionId) public {
-    require(submissionId < submissions.length, "Invalid submission ID");
-    Submission storage submission = submissions[submissionId];
-    submission.votingEnded = true;
-  }
-
-  // Function to check if the voting phase has ended for a submission
-  function getVotingEnded(uint256 submissionId) public view returns (bool) {
-    require(submissionId < submissions.length, "Invalid submission ID");
-    Submission storage submission = submissions[submissionId];
-    return submission.votingEnded;
-  }
-
   // Get all approved reviewers for a submission
   function getApprovedReviewers(uint256 submissionId) public view returns (address[] memory) {
     require(submissionId < submissions.length, "Invalid submission ID");
@@ -372,21 +388,5 @@ contract PeerReview is RrpRequesterV0, Ownable {
       }
     }
     revert("Reviewer not found.");
-  }
-
-  // Updated function to shuffle a copy of the reviewers and store it in the Submission struct
-  function shuffleReviewers(uint256 submissionId) internal {
-    require(submissionId < submissions.length, "Invalid submission ID");
-    Submission storage submission = submissions[submissionId];
-    address[] memory shuffledReviewers = new address[](reviewers.length);
-    for (uint256 i = 0; i < reviewers.length; i++) {
-      shuffledReviewers[i] = reviewers[i].addr;
-    }
-    uint256 seed = submission.seed;
-    for (uint256 i = 0; i < shuffledReviewers.length; i++) {
-      uint256 j = (uint256(keccak256(abi.encode(seed, i))) % (i + 1));
-      (shuffledReviewers[i], shuffledReviewers[j]) = (shuffledReviewers[j], shuffledReviewers[i]);
-    }
-    submission.shuffledReviewers = shuffledReviewers;
   }
 }

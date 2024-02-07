@@ -104,3 +104,38 @@ assignQrndSeed
 
 >> seed appears when reading submissions[0]
 
+findReviewers
+0
+
+commitVote as getSelectedReviewers can use createCommitHashTrue/False pure functions
+  commit1 true
+    commit
+    0xf28366e0dbd0c64476456ac244996f1d2640c8a0defe2a9ce4e1cbaf924f59c2
+  commit2 true
+    commit
+    0x347ed0f6288121108312caab7abe03d320b0b4ce2deda7db105d0038d908047b
+  commit3 false
+    commit
+    0x0cb80e70de7643e58cd613588d81d94145aadcd6e2ffb4244099f4a4292bf2d8
+
+endVoting
+
+revealVote as getSelectedReviewers
+  commit1 true
+    secret
+    0x03301b3328418a6f426a79f8f451948300000000000000000000000000000000
+    commit
+    0xf28366e0dbd0c64476456ac244996f1d2640c8a0defe2a9ce4e1cbaf924f59c2
+  commit2 true
+    secret
+    0x8e0b79052a49a89943887bc0fbc7288200000000000000000000000000000000
+    commit
+    0x347ed0f6288121108312caab7abe03d320b0b4ce2deda7db105d0038d908047b
+  commit3 false
+    secret
+    0x512da4641020358f91de50b68983ce0500000000000000000000000000000000
+    commit
+    0x0cb80e70de7643e58cd613588d81d94145aadcd6e2ffb4244099f4a4292bf2d8
+
+
+submission.isApproved becomes true

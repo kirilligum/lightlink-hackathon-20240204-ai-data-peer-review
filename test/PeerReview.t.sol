@@ -309,9 +309,22 @@ contract PeerReviewTest is PRBTest, StdCheats {
   function testDisplayReviewersVotes() public {
     // Setup: Simulate the entire voting process including revealing votes
     peerReview.findReviewers(0);
-    bytes32 commitHash1 = peerReview.createCommitHashTrue(hex"03301b3328418a6f426a79f8f4519483");
-    bytes32 commitHash2 = peerReview.createCommitHashTrue(hex"8e0b79052a49a89943887bc0fbc72882");
-    bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
+    console2.log("commit1 true");
+    bytes32 commitSecret1 = hex"03301b3328418a6f426a79f8f4519483";
+    bytes32 commitHash1 = peerReview.createCommitHashTrue(commitSecret1);
+    console2.logBytes32(commitSecret1);
+    console2.logBytes32(commitHash1);
+    console2.log("commit2 true");
+    bytes32 commitSecret2 = hex"8e0b79052a49a89943887bc0fbc72882";
+    bytes32 commitHash2 = peerReview.createCommitHashTrue(commitSecret2);
+    console2.logBytes32(commitSecret2);
+    console2.logBytes32(commitHash2);
+    console2.log("commit3 false");
+    bytes32 commitSecret3 = hex"512da4641020358f91de50b68983ce05";
+    bytes32 commitHash3 = peerReview.createCommitHashFalse(commitSecret3);
+    // bytes32 commitHash3 = peerReview.createCommitHashFalse(hex"512da4641020358f91de50b68983ce05");
+    console2.logBytes32(commitSecret3);
+    console2.logBytes32(commitHash3);
     vm.startPrank(0x90F79bf6EB2c4f870365E785982E1f101E93b906);
     peerReview.commitVote(0, commitHash1);
     vm.stopPrank();
