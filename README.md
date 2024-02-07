@@ -73,8 +73,8 @@ https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 1. select PeerReview.sol file at gist-182aa280b7f1a2ef6e7ff4e75961934f/github/kirilligum/lightlink-hackathon-20240204-ai-data-peer-review/src/PeerReview.sol
 1. Compile
 1. create wallets for 1+ authors and 3+ reviewers (need at least 3 reviewers for voting)
-  - `cast wallet new-mnemonic`
-  - import the wallets to metamask
+    - `cast wallet new-mnemonic`
+    - import the wallets to metamask
 1. Deploy
   - set Environment to be Injected Provider so that you can interact with metamask. I used Pegasus lighlink test network because they allow gassless transactions
   - use your owner account on metamask to deploy
