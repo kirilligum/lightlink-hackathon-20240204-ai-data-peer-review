@@ -64,12 +64,22 @@ Our decentralized peer-review system works as follows:
 5. Took on the "Best Use of API3 QRNG" challenge by API3 — I randomized peer-reviewers to avoid bias. For BlockBounty, I added the random generating EOA to my whitelist, used private tags, and submitted a public tag "data-labeling".
 
 
-## Running and interacting on Remix
+## Deploying and interacting on Remix
 
 https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 
 1. go to remix https://remix.ethereum.org/#version=soljson-v0.8.9+commit.e5eed63a.js&optimize=false&runs=200&gist= and create a blank workspace
 1. Click on Load from Gist and enter https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 1. select PeerReview.sol file at gist-182aa280b7f1a2ef6e7ff4e75961934f/github/kirilligum/lightlink-hackathon-20240204-ai-data-peer-review/src/PeerReview.sol
-
+1. Compile
+1. create wallets for 1+ authors and 3+ reviewers (need at least 3 reviewers for voting)
+  1. `cast wallet new-mnemonic`
+  1. import the wallets to metamask
+1. Deploy
+  1. set Environment to be Injected Provider so that you can interact with metamask. I used Pegasus lighlink test network because they allow gassless transactions
+  1. use your owner account on metamask to deploy
+  1. list authors. using anvil/harhat addresses as an example: ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"] (you should use the addresses that you created)
+  1. list reviewers. using anvil/harhat addresses as an example: [ "0x90F79bf6EB2c4f870365E785982E1f101E93b906", "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65", "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc", "0x976EA74026E726554dB657fA54763abd0C3a0aa9"] (you should use the addresses that you created)
+  1. _AIRNODERRP is 0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd as described in api3 quantum random generator doc https://docs.api3.org/guides/qrng/qrng-remix/
+1.
 
