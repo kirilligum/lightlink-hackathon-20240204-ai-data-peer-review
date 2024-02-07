@@ -101,5 +101,9 @@ https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
     - pick the best reviewers for the data
         - create a match score based on how many of the reviewr's keywords are in the question and response
         - using a shorter version of min-heap, find 3 reviewers with highest matches between reviewer's keywords and the data object
-1.
+1. switch to each of the reviewer an `commitVote`
+1. mark `endVoting`
+1. `revealVote`
+1. `submission.isApproved ` shows if the submission is approved
+1. an author can submit a new submission
 
