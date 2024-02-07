@@ -81,9 +81,25 @@ https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
     1. list authors. using anvil/harhat addresses as an example: ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"] (you should use the addresses that you created)
     1. list reviewers. using anvil/harhat addresses as an example: [ "0x90F79bf6EB2c4f870365E785982E1f101E93b906", "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65", "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc", "0x976EA74026E726554dB657fA54763abd0C3a0aa9"] (you should use the addresses that you created)
     1. _AIRNODERRP is 0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd as described in api3 quantum random generator doc https://docs.api3.org/guides/qrng/qrng-remix/
-1. AddKeywords for the reviewers. For example,
+1. `addKeywords` for the reviewers.
+    1. switch to the first reviewer account (0x90F79bf6EB2c4f870365E785982E1f101E93b906) and submit a string of
     - keywordsReviewer1 ["gasless","blockchain"]
     - keywordsReviewer3 ["transactions"]
     - keywordsReviewer4 ["fees"]
     - we skip keywordsReviewer2
+1. `submitData`
+    - _question: "why do we need gasless transactions?"
+    - _response: "We need gasless transactions to make blockchain easier to use and access for everyone, especially newcomers, by removing the need for upfront crypto and managing fees. This improves user experience and potentially helps scale the technology. However, it introduces some centralization concerns."
+1. set up quantum random generator accorig to https://docs.api3.org/guides/qrng/qrng-remix/
+    1. `setRequestParameters`
+    1. send money to the sponsor wallet so it can post the random number. keep in mind that you generate the sponsor wallet depending on this contract address
+    1. `makeRequestUint256`
+    1. wait for the random generator server to post a random number. check that `_qrngUint256 ` changed from 0 to a random number
+    1. assign that random number to the current submission `assignQrndSeed`
+1. run `findReviewers` . it will:
+    - shuffles reviewers so that when we iterate them, the order changes. sometimes many reviewers will have the same match score, in that case shuffling makes sure that reviewer4s that are earlier in the original list don't have a preference of being picked
+    - pick the best reviewers for the data
+        - create a match score based on how many of the reviewr's keywords are in the question and response
+        - using a shorter version of min-heap, find 3 reviewers with highest matches between reviewer's keywords and the data object
+1.
 
