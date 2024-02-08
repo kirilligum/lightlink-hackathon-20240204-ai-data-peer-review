@@ -1,6 +1,8 @@
 # AI data peer review
 
-lightlink hackathon 20240204
+lightlink hackathon 20240204 https://youtu.be/xgpdjpQqGkY
+
+
 
 
 High-quality data is the biggest driver and competitive advantage in AI. Inspired by peer-reviewed scientific publishing, I have built a Web3 peer-review system for creating high-quality datasets that focus on teaching AI how to think. Here is how it works:
