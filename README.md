@@ -103,6 +103,15 @@ https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
         - create a match score based on how many of the reviewr's keywords are in the question and response
         - using a shorter version of min-heap, find 3 reviewers with highest matches between reviewer's keywords and the data object
 1. switch to each of the reviewer and `commitVote`
+    - commit-reveal is a scheme for blind voting, where participants don't see each others votes untill the voting ends
+    - commit-reveal works in the following way:
+        1. voters off-chain encode the vote (true or false) together with salt as a byte32 commit hash
+        1. voters post the commit hash on-chain -- it becomes publicly visible
+        1. when everyone voted, voters reaveal they commit by postin the vote (true or false) and the salt on chain
+        1. smart contracts on-chain encodes the commit hash from the on-chain posted vote and salt
+        1. smart contract check the on-chain encoded commit hash with the initially off-chain encoded commit hash
+        1. now that the votes that were enitially posted are visible, the contract can count the votes and make the decision
+    - to get the commit byte32 hash, you can use the contract's pure functions: `createCommitHashTrue(salt)`
 1. mark `endVoting`
 1. `revealVote`
 1. `submission.isApproved ` shows if the submission is approved
