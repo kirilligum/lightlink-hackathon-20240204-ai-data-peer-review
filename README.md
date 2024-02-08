@@ -13,7 +13,7 @@ High-quality data is the biggest driver and competitive advantage in AI. Inspire
 5. Reviewers examine the data object and, in a blind vote (commit-reveal scheme), decide if the data object is of high enough quality to be accepted.
 All the data is on-chain, creating transparency for AI and a way for authors and reviewers to be compensated and to grow their reputation in an open manner. The contract has undergone extensive testing.
 
-![contract flow](./PeerReview_flow.mmd.svg){width=400}
+![contract flow](./PeerReview_flow.mmd.svg){width=40%}
 
 ## Motivation
 
