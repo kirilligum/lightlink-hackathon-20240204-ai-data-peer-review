@@ -69,7 +69,7 @@ Our decentralized peer-review system works as follows:
 
 ![contract sequence](./PeerReview_sequence.mmd.svg)
 
-https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
+you can use the following gist to test the contract on testnet: https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 
 1. go to remix https://remix.ethereum.org/#version=soljson-v0.8.9+commit.e5eed63a.js&optimize=false&runs=200&gist= and create a blank workspace
 1. Click on Load from Gist and enter https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
