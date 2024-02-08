@@ -11,7 +11,6 @@ High-quality data is the biggest driver and competitive advantage in AI. Inspire
 All the data is on-chain, creating transparency for AI and a way for authors and reviewers to be compensated and to grow their reputation in an open manner. The contract has undergone extensive testing.
 
 <!--START_SECTION:update_image-->
-<img src="./PeerReview_flow.mmd.svg" width="400">
 <!--END_SECTION:update_image-->
 
 ## Motivation
