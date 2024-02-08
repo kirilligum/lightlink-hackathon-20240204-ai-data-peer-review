@@ -11,12 +11,13 @@ High-quality data is the biggest driver and competitive advantage in AI. Inspire
 5. Reviewers examine the data object and, in a blind vote (commit-reveal scheme), decide if the data object is of high enough quality to be accepted.
 All the data is on-chain, creating transparency for AI and a way for authors and reviewers to be compensated and to grow their reputation in an open manner. The contract has undergone extensive testing.
 
+![contract flow](./PeerReview_flow.mmd.svg)
+![contract sequence](./PeerReview_sequence.mmd.svg)
 
 
 
 
-
-## Description
+## Motivation
 
 With the introduction of ChatGPT and instruction-tuning (https://openai.com/research/instruction-following), large language models (LLMs) have transitioned from being a hobby of highly technical individuals to an essential tool for almost everyone in nearly any knowledge-based task. Instruction-tuning demonstrated that the ROI on creating high-quality data is 10-100x that of spending resources on GPUs. With increasingly sophisticated LLMs, shallow knowledge data labelers are being replaced by LLMs, creating a demand for deeper knowledge labelers. In addition, the "Textbooks Are All You Need" paper (https://arxiv.org/abs/2306.11644) showed that including only high-quality data not only reduces the dataset size but also improves benchmarks.
 
