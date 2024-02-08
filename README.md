@@ -23,6 +23,40 @@ All the data is on-chain, creating transparency for AI and a way for authors and
 
 `addKeywords` -- reviewers add keywords for the topics of their expertise. this allows the contract to find reviewers that have the highest expertise related to the submitted data
 
+## 📖 General requirements of the hackathon
+
+1. Enabled Enterprise mode on testnet for my contract https://pegasus.lightlink.io/tx/0x2523b1b16717699d33ec2c16903025f8ef5b15384c835f24ceb8c95df8494f4d
+2. Deployed (https://pegasus.lightlink.io/address/0x573d1A911A4355bDd26ecFFc0E24E27a5105c121)  on Lightlink testnet Pegasus (with enterprise mode)
+3. the whole project is from scratch
+4. Solo Developer
+5. Took on the "Best Use of API3 QRNG" challenge by API3 — I randomized peer-reviewers to avoid bias. For BlockBounty, I added the random generating EOA to my whitelist, used private tags, and submitted a public tag "data-labeling".
+
+## ✅ Judging Criteria
+
+- Functionality: How well the project fulfills its tasks:
+    - fully functional (from submitting data to marking the submission as accepted) contract with extensive [tests](test/PeerReview.t.sol)
+- Technical Implementation: The efficiency of the technological approach and solution:
+    - the text of submitted data matched with reviewer's keywords to find best 3 reviewers automating editor's task in scientific journals
+    - we use random number generator to reorder reviewers so that if the reviewers have the same match score to the data, they are picked at random removing the bias that comes from picking them in the same order as they were submitted into the constructor
+    - we use commit-reveal to enforce blind voting so that the votes by earlier reviewers don't influece the later reviewers
+    - Note that purposfully we keep the contract simple to understand and review, we avoid optimizing for complexity (using patricia or vp trees for keyword matching) and scaling (batching multiple transactions together)
+- Presentation and Scaling Strategy: How well the team understands the problem, how the project solves it, and whether the team has a plan for scaling and developing the project within the LightLink ecosystem:
+    -Problem: training high quality AI requires quality data rather than more data. Solution: globally-scalable peer-review system based on scientific peer-review publishing but reducing costs by automating editors. publishing on blockchain also alows for transparency, which in turn allows for financial incentives and reputation.
+    - to scale, I will make a batch transaction version, add on-chain comments hen rejecting, add UI, target web3 companies as the initial customer and help them create high quality data sets for their products
+    - use Lightlink network in production so that whitelisted authors and reviewers don't have to pay gas fees. this is especially important when reviewers are not in web3 and sending funds to a web3 wallet is problematic.
+
+## 🎢 Bounties
+- Best Project built on LightLink
+    - ✔️  Deployed my project on LightLink testnet https://pegasus.lightlink.io/address/0x573d1A911A4355bDd26ecFFc0E24E27a5105c121
+    - ✔️  aligned with "Best use of API3 QRNG" bounty by API3
+- LightLink Deployment & Blockscout Interactions
+    - ✔️  set up "MyAccount"
+    - ✔️  added my hackathon address to watchlist
+    - ✔️  tagged my hackathon account as "hackathon account"
+    - ✔️  submitted public tags "data", "ai"
+- Best use of API3 QRNG
+    - ✔️ randomizing the order of reviewers in a review process so that reviewers earlier in the submitted list of reviewers don't get always picked first.
+
 ## Motivation
 
 With the introduction of ChatGPT and instruction-tuning (https://openai.com/research/instruction-following), large language models (LLMs) have transitioned from being a hobby of highly technical individuals to an essential tool for almost everyone in nearly any knowledge-based task. Instruction-tuning demonstrated that the ROI on creating high-quality data is 10-100x that of spending resources on GPUs. With increasingly sophisticated LLMs, shallow knowledge data labelers are being replaced by LLMs, creating a demand for deeper knowledge labelers. In addition, the "Textbooks Are All You Need" paper (https://arxiv.org/abs/2306.11644) showed that including only high-quality data not only reduces the dataset size but also improves benchmarks.
@@ -64,18 +98,6 @@ Our decentralized peer-review system works as follows:
 - Remix and Forge Test for Solidity contract development and testing.
 
 
-## 📖 General requirements of the hackathon
-
-1. Enabled Enterprise mode on testnet for my contract https://pegasus.lightlink.io/tx/0x2523b1b16717699d33ec2c16903025f8ef5b15384c835f24ceb8c95df8494f4d
-2. Deployed (https://pegasus.lightlink.io/address/0x573d1A911A4355bDd26ecFFc0E24E27a5105c121)  on Lightlink testnet Pegasus (with enterprise mode)
-3. the whole project is from scratch
-4. Solo Developer
-5. Took on the "Best Use of API3 QRNG" challenge by API3 — I randomized peer-reviewers to avoid bias. For BlockBounty, I added the random generating EOA to my whitelist, used private tags, and submitted a public tag "data-labeling".
-
-✅ Judging Criteria
-
-- Functionality
-- fully functional contract with extensive [tests](test/PeerReview.t.sol)
 
 ## Deploying and interacting on Remix
 
