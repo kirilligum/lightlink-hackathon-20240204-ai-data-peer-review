@@ -15,6 +15,8 @@ All the data is on-chain, creating transparency for AI and a way for authors and
 <!-- ![flow]("PeerReview_flow.mmd.svh?") -->
 <img src="./PeerReview_flow.mmd.svg?jl" width="500">
 <!--END_SECTION:update_image-->
+`submitData` -- an author submits the data, currently in the format of a question and a reponse. This data will be reviewed and used to train LLMs if accepted. Instruction-tuning -- a technique that uses high quality question-response date was the missing piece that allow for creation of highly effective chat assistants like ChatGPT
+`addKeywords` -- reviewers add keywords for the topics of their expertise. this allows the contract to find reviewers that have the highest expertise related to the submitted data
 
 ## Motivation
 
