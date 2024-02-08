@@ -2,6 +2,10 @@
 
 lightlink hackathon 20240204 https://youtu.be/xgpdjpQqGkY
 
+<!--START_SECTION:update_image-->
+<img src="./PeerReview_simple_flow.mmd.svg?jsl">
+<!--END_SECTION:update_image-->
+
 High-quality data is the biggest driver and competitive advantage in AI. Inspired by peer-reviewed scientific publishing, I have built a Web3 peer-review system for creating high-quality datasets that focus on teaching AI how to think. Here is how it works:
 1. Authors and reviewers are specified during the creation of the contract.
 2. Reviewers specify their areas of expertise.
@@ -12,7 +16,6 @@ All the data is on-chain, creating transparency for AI and a way for authors and
 
 ## Contract flow
 <!--START_SECTION:update_image-->
-<!-- ![flow]("PeerReview_flow.mmd.svh?") -->
 <img src="./PeerReview_flow.mmd.svg?jl" width="500">
 <!--END_SECTION:update_image-->
 
