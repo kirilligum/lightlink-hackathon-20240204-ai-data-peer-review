@@ -12,10 +12,6 @@ High-quality data is the biggest driver and competitive advantage in AI. Inspire
 All the data is on-chain, creating transparency for AI and a way for authors and reviewers to be compensated and to grow their reputation in an open manner. The contract has undergone extensive testing.
 
 ![contract flow](./PeerReview_flow.mmd.svg)
-![contract sequence](./PeerReview_sequence.mmd.svg)
-
-
-
 
 ## Motivation
 
@@ -66,6 +62,8 @@ Our decentralized peer-review system works as follows:
 
 
 ## Deploying and interacting on Remix
+
+![contract sequence](./PeerReview_sequence.mmd.svg)
 
 https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 

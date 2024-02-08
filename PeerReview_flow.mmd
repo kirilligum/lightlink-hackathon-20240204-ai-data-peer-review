@@ -1,9 +1,21 @@
 graph TD
-a1["Author 1"];
-a2["Author 2"];
-r1["Reviewer 1"];
-r2["Reviewer 2"];
-r3["Reviewer 3"];
-r4["Reviewer 4"];
+a["Authors"] ==> c["constructor"]
+r["Reviewers"] ==> c
 
 
+r --> ak["addKeywords"]
+c ==> ak
+
+a --> sd["submitData"]
+ak ==> sd
+
+sd ==> f["findReviewers"]
+ra["random gen addr"] --> f
+f ==> cv["commitVote"]
+r --> cv
+cv ==> ev["endVoting"]
+ev ==> rv["revealVote"]
+r --> rv
+rv ==> sp["schieling point"]
+sp --> aprove
+sp --> reject
