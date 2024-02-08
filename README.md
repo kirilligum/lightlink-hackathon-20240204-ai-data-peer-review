@@ -71,6 +71,8 @@ Our decentralized peer-review system works as follows:
 
 you can use the following gist to test the contract on testnet: https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 
+### instructions
+
 1. go to remix https://remix.ethereum.org/#version=soljson-v0.8.9+commit.e5eed63a.js&optimize=false&runs=200&gist= and create a blank workspace
 1. Click on Load from Gist and enter https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 1. select PeerReview.sol file at gist-182aa280b7f1a2ef6e7ff4e75961934f/github/kirilligum/lightlink-hackathon-20240204-ai-data-peer-review/src/PeerReview.sol
