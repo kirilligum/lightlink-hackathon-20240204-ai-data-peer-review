@@ -64,7 +64,7 @@ Our decentralized peer-review system works as follows:
 - Remix and Forge Test for Solidity contract development and testing.
 
 
-## General requirements of the hackathon
+## 📖 General requirements of the hackathon
 
 1. Enabled Enterprise mode on testnet for my contract https://pegasus.lightlink.io/tx/0x2523b1b16717699d33ec2c16903025f8ef5b15384c835f24ceb8c95df8494f4d
 2. Deployed (https://pegasus.lightlink.io/address/0x573d1A911A4355bDd26ecFFc0E24E27a5105c121)  on Lightlink testnet Pegasus (with enterprise mode)
@@ -72,6 +72,10 @@ Our decentralized peer-review system works as follows:
 4. Solo Developer
 5. Took on the "Best Use of API3 QRNG" challenge by API3 — I randomized peer-reviewers to avoid bias. For BlockBounty, I added the random generating EOA to my whitelist, used private tags, and submitted a public tag "data-labeling".
 
+✅ Judging Criteria
+
+- Functionality
+- fully functional contract with extensive [tests](test/PeerReview.t.sol)
 
 ## Deploying and interacting on Remix
 
