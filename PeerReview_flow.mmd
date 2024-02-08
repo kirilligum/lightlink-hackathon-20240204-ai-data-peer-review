@@ -1,6 +1,6 @@
 graph TD
-a["Authors"] ==> c["constructor"]
-r["Reviewers"] ==> c
+a(["Authors"]) ==> c["constructor"]
+r(["Reviewers"]) ==> c
 
 
 r --> ak["addKeywords"]
@@ -10,14 +10,23 @@ a --> sd["submitData"]
 ak ==> sd
 
 sd ==> f["findReviewers"]
-ra["random gen addr"] --> f
+ra(("random<br/>number")) --> sh
+f -.-> sh["shuffle<br/> reviewers"]
+style sh stroke-dasharray: 5 5
+sh-.->m["match<br/>keywords</br>to data"]
+style m stroke-dasharray: 5 5
+ak-.->m
+sd -.-> m
+m-.->f
 f ==> cv["commitVote"]
 r --> cv
 cv ==> ev["endVoting"]
+cv --> sv[("off-chain<br/>secret")]
 ev ==> rv["revealVote"]
+sv --> rv
 r --> rv
 rv ==> sp{"schieling<br/> point"}
-sp --> aprove
-sp --> reject
+sp --> aprove[/"approve"\]
+sp --> reject[/"reject"\]
 
 

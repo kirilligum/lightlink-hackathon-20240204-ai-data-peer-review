@@ -13,7 +13,7 @@ All the data is on-chain, creating transparency for AI and a way for authors and
 ## Contract flow
 <!--START_SECTION:update_image-->
 <!-- ![flow]("PeerReview_flow.mmd.svh?") -->
-<img src="./PeerReview_flow.mmd.svg?jkl" width="400">
+<img src="./PeerReview_flow.mmd.svg?jl" width="400">
 <!--END_SECTION:update_image-->
 
 ## Motivation
