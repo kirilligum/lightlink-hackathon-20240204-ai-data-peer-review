@@ -68,8 +68,6 @@ Our decentralized peer-review system works as follows:
 
 ## Deploying and interacting on Remix
 
-![contract sequence](./PeerReview_sequence.mmd.svg)
-
 you can use the following gist to test the contract on testnet: https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
 
 ### instructions
