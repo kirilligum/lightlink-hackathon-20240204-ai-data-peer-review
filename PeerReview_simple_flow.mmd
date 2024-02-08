@@ -1,0 +1,8 @@
+graph LR
+a(["Authors"]) ==>|"question+response"| m["match"]
+r(["Reviewers"]) ==>|"expertise keywords"| m
+m==>v{"count<br/>votes"}
+r-->|"accept or reject"|v
+v --> aprove[/"approve"\]
+v --> reject[/"reject"\]
+aprove -->t[("train LLM")]
