@@ -44,6 +44,8 @@ Our decentralized peer-review system works as follows:
 - A rating system for reviewers and authors.
 - Data attribution - get paid more for more impactful data.
 - An on-chain LLM (already in existence) for picking reviewers.
+- batch processing
+- on-boarding reviewers with a test dataset
 
 
 ## tech stack
@@ -111,9 +113,9 @@ https://gist.github.com/kirilligum/182aa280b7f1a2ef6e7ff4e75961934f
         1. smart contracts on-chain encodes the commit hash from the on-chain posted vote and salt
         1. smart contract check the on-chain encoded commit hash with the initially off-chain encoded commit hash
         1. now that the votes that were enitially posted are visible, the contract can count the votes and make the decision
-    - to get the commit byte32 hash, you can use the contract's pure functions: `createCommitHashTrue(salt)`
+    - to get the commit byte32 hash, you can use the contract's pure functions: `createCommitHashTrue(salt)` and `createCommitHashFalse(salt)`. you need to generate `salt` and keep it off-chain until the reveal phase
 1. mark `endVoting`
-1. `revealVote`
-1. `submission.isApproved ` shows if the submission is approved
-1. an author can submit a new submission
+1. `revealVote` - reviewers post the original vote and the salt to reveal their initial vote in a trusted way
+1. `submission.isApproved ` shows if the submission is approved or rejected
+1. an author can submit a new submission and repeat the process
 
